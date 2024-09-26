@@ -1,0 +1,102 @@
+:: StoryTitle
+British Library Bingo Card
+
+
+:: StoryData
+{
+	"ifid": "B2C40547-C02D-413A-810A-2B2F89FE2075",
+	"format": "SugarCube",
+	"format-version": "2.36.1",
+	"start": "landing",
+	"zoom": 1
+}
+
+
+
+:: Story Stylesheet [stylesheet]
+@import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css');
+
+@import url("styles/generics.css");
+@import url("styles/styles.css");
+
+
+
+:: UserScript [script]
+/* Import external libraries. */
+
+importScripts(["https://code.jquery.com/jquery-3.5.1.slim.min.js",
+"https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js", 
+"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"]);
+
+
+
+:: Story JavaScript [script]
+$('#ui-bar').remove();
+$(document.head).find('#style-ui-bar').remove();
+$(document).on('click', '.bingo-square', function() {
+    $(this).toggleClass('clicked');
+});
+
+
+:: header[nobr]
+<header>
+</header>
+
+:: footer[nobr]
+<footer>
+    <<button "Back">>
+        <<goto "landing">>
+    <</button>>
+</footer>
+
+
+:: landing [nobr]
+<main>
+    <<button "Bingo">>
+        <<goto "bingo">>
+    <</button>>
+        <<button "Mentimeter">>
+        <<goto "mentimeter">>
+    <</button>>
+</main>
+
+:: mentimeter[nobr]
+<div class="menti-wrapper"><iframe src="https://www.menti.com/alufmwvidw87" width="100%" height="500px" frameborder="0" allowfullscreen></iframe></div>
+
+    <<include "footer">>
+
+:: bingo[nobr]
+<<include "header">>
+
+<main>
+<div class="bingo-container">
+    <div class="bingo-square" data-id="1">1</div>
+    <div class="bingo-square" data-id="2">2</div>
+    <div class="bingo-square" data-id="3">3</div>
+    <div class="bingo-square" data-id="4">4</div>
+    <div class="bingo-square" data-id="5">5</div>
+    <div class="bingo-square" data-id="6">6</div>
+    <div class="bingo-square" data-id="7">7</div>
+    <div class="bingo-square" data-id="8">8</div>
+    <div class="bingo-square" data-id="9">9</div>
+    <div class="bingo-square" data-id="10">10</div>
+    <div class="bingo-square" data-id="11">11</div>
+    <div class="bingo-square" data-id="12">12</div>
+    <div class="bingo-square" data-id="13">13</div>
+    <div class="bingo-square" data-id="14">14</div>
+    <div class="bingo-square" data-id="15">15</div>
+    <div class="bingo-square" data-id="16">16</div>
+    <div class="bingo-square" data-id="17">17</div>
+    <div class="bingo-square" data-id="18">18</div>
+    <div class="bingo-square" data-id="19">19</div>
+    <div class="bingo-square" data-id="20">20</div>
+    <div class="bingo-square" data-id="21">21</div>
+    <div class="bingo-square" data-id="22">22</div>
+    <div class="bingo-square" data-id="23">23</div>
+    <div class="bingo-square" data-id="24">24</div>
+    <div class="bingo-square" data-id="25">25</div>
+</div>
+
+</main>
+    <<include "footer">>
