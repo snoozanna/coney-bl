@@ -52,7 +52,12 @@ $(document).on('click', '.bingo-square', function() {
 
 
 :: landing [nobr]
+<div class="desktop-message" style="display: none;">
+  <p>Please view this poll on a phone.</p>
+</div>
 <main>
+
+
     <<button "Bingo">>
         <<goto "bingo">>
     <</button>>

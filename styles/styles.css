@@ -100,6 +100,8 @@
   
   }
 
+ 
+
   /* BUTTONS & LINKS  */
   
   button,
@@ -178,7 +180,7 @@ body {
   max-width: 500px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f8f9fa;
+  background-color: #ffcee7;
   border: 2px solid #333;
 }
 
@@ -186,13 +188,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100px;
   background-color: #fff;
   border: 2px solid #333;
   font-size: 24px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  border-radius: 0.5rem;
 }
 
 .bingo-square:hover {
@@ -210,4 +212,17 @@ body {
 .menti-wrapper{
   width: 100%;
   padding: 1.5rem;
+}
+
+@media screen and (min-width: 700px) {
+ main{
+  display: none
+};
+
+  .desktop-message {
+    display: block;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 20px;
+  }
 }
