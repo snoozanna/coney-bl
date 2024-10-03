@@ -126,9 +126,9 @@ $(document.head).find('#style-ui-bar').remove();
     &lt;&lt;/button&gt;&gt;
 &lt;/footer&gt;</tw-passagedata><tw-passagedata pid="4" name="landing" tags="nobr" position="475,100" size="100,100">&lt;&lt;set $task1 to false&gt;&gt;
 &lt;&lt;set $tasks to []&gt;&gt;
-&lt;&lt;for _i to 1; _i lt 26; _i++&gt;&gt;
+&lt;&lt;for _i to 0; _i lt 25; _i++&gt;&gt;
     &lt;&lt;set $tasks.push({
-        task: _i,
+        task: _i + 1,
         complete: false
     })&gt;&gt;
 &lt;&lt;/for&gt;&gt;
@@ -147,33 +147,77 @@ $(document.head).find('#style-ui-bar').remove();
 &lt;/main&gt;</tw-passagedata><tw-passagedata pid="5" name="mentimeter" tags="nobr" position="600,100" size="100,100">&lt;div class=&quot;menti-wrapper&quot;&gt;&lt;iframe src=&quot;https://www.menti.com/alufmwvidw87&quot; width=&quot;100%&quot; height=&quot;500px&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;
 
     &lt;&lt;include &quot;footer&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="6" name="bingo" tags="nobr" position="725,100" size="100,100">&lt;&lt;include &quot;header&quot;&gt;&gt;
-&lt;main&gt;
 
+&lt;main&gt;
+&lt;div id=&quot;winMount&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;bingo-container&quot;&gt;
-   &lt;&lt;for _i to 1; _i lt 26; _i++&gt;&gt;
+   &lt;&lt;for _i to 0; _i lt 25; _i++&gt;&gt;
     &lt;&lt;capture _i&gt;&gt;
-        &lt;&lt;set $img to &quot;assets/img/&quot; + _i + &quot;.png&quot;&gt;&gt;
-        &lt;div class=&quot;bingo-square&quot; sc-eval:id=&quot;&#39;task&#39; + _i&quot; sc-eval:data-id=&quot;_i&quot;&gt;
-            &lt;&lt;link [img[$img][_i]]&gt;&gt;
-                &lt;&lt;set $current to _i&gt;&gt;
-                &lt;&lt;goto &quot;_templateTask&quot;&gt;&gt;
-            &lt;&lt;/link&gt;&gt;
-        &lt;/div&gt;
-    &lt;&lt;/capture&gt;&gt;
+
+            &lt;&lt;set $img to &quot;assets/img/&quot; + (_i+1) + &quot;.png&quot;&gt;&gt;
+            &lt;div class=&quot;bingo-square&quot; sc-eval:id=&quot;&#39;task&#39; + (_i+1)&quot; sc-eval:data-id=&quot;(_i+1)&quot;&gt;
+ 
+                &lt;&lt;link [img[$img][_templateTask]]&gt;&gt;
+                    &lt;&lt;set $current to (_i+1)&gt;&gt;
+            
+                &lt;&lt;/link&gt;&gt;
+            &lt;/div&gt;
+       &lt;&lt;/capture&gt;&gt;
+
     &lt;&lt;/for&gt;&gt;
 &lt;/div&gt;
 
 &lt;/main&gt;
+
     &lt;&lt;include &quot;footer&quot;&gt;&gt;
 
 &lt;&lt;timed 0.1s&gt;&gt;
 &lt;&lt;include &quot;reviewScores&quot;&gt;&gt;
+&lt;&lt;include &quot;checkForWins&quot;&gt;&gt;
 &lt;&lt;/timed&gt;&gt;</tw-passagedata><tw-passagedata pid="7" name="reviewScores" tags="" position="850,100" size="100,100">&lt;&lt;for _i to 0; _i lt $tasks.length; _i++&gt;&gt;
     &lt;&lt;if $tasks[_i].complete is true&gt;&gt;
-        &lt;&lt;set $id to &quot;#task&quot; + _i &gt;&gt;
+        &lt;&lt;set $id to &quot;#task&quot; + (_i+1) &gt;&gt;
         &lt;&lt;addclass $id &quot;complete&quot;&gt;&gt;
     &lt;&lt;/if&gt;&gt;
-&lt;&lt;/for&gt;&gt;</tw-passagedata><tw-passagedata pid="8" name="1" tags="nobr" position="975,100" size="100,100">&lt;main&gt;
+&lt;&lt;/for&gt;&gt;</tw-passagedata><tw-passagedata pid="8" name="checkForWins" tags="" position="975,100" size="100,100">&lt;&lt;set _hasWon to false&gt;&gt;
+
+&lt;!-- Check horizontal wins (rows) --&gt;
+&lt;&lt;for _row to 0; _row lt 5; _row++&gt;&gt;
+    &lt;&lt;if $tasks.slice(_row * 5, _row * 5 + 5).every(task =&gt; task.complete)&gt;&gt;
+        &lt;&lt;set _hasWon to true&gt;&gt;
+    &lt;&lt;/if&gt;&gt;
+&lt;&lt;/for&gt;&gt;
+
+&lt;!-- Check vertical wins (columns) --&gt;
+&lt;&lt;for _col to 0; _col lt 5; _col++&gt;&gt;
+    &lt;&lt;set _verticalTasks to []&gt;&gt;
+    &lt;&lt;for _row to 0; _row lt 5; _row++&gt;&gt;
+        &lt;&lt;set _verticalTasks.push($tasks[_row * 5 + _col])&gt;&gt;
+    &lt;&lt;/for&gt;&gt;
+    &lt;&lt;if _verticalTasks.every(task =&gt; task.complete)&gt;&gt;
+        &lt;&lt;set _hasWon to true&gt;&gt;
+    &lt;&lt;/if&gt;&gt;
+&lt;&lt;/for&gt;&gt;
+
+&lt;!-- Check diagonal wins --&gt;
+&lt;!-- Top-left to bottom-right diagonal --&gt;
+&lt;&lt;set _diag1 to [$tasks[0], $tasks[6], $tasks[12], $tasks[18], $tasks[24]]&gt;&gt;
+&lt;&lt;if _diag1.every(task =&gt; task.complete)&gt;&gt;
+    &lt;&lt;set _hasWon to true&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+
+&lt;!-- Top-right to bottom-left diagonal --&gt;
+&lt;&lt;set _diag2 to [$tasks[4], $tasks[8], $tasks[12], $tasks[16], $tasks[20]]&gt;&gt;
+&lt;&lt;if _diag2.every(task =&gt; task.complete)&gt;&gt;
+    &lt;&lt;set _hasWon to true&gt;&gt;
+&lt;&lt;/if&gt;&gt;
+
+&lt;!-- Display win message if a line is complete --&gt;
+&lt;&lt;if _hasWon is true&gt;&gt;
+ &lt;&lt;replace &quot;#winMount&quot;&gt;&gt;
+        &lt;h1&gt;Win!&lt;/h1&gt;
+&lt;&lt;/replace&gt;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="9" name="1" tags="nobr" position="1100,100" size="100,100">&lt;main&gt;
     &lt;h2&gt;Task 1&lt;/h2&gt;
     
     &lt;p&gt;Have you completed this task?&lt;/p&gt;
@@ -186,7 +230,7 @@ $(document.head).find('#style-ui-bar').remove();
        &lt;&lt;set $task1 to false&gt;&gt;
         &lt;&lt;goto &quot;bingo&quot;&gt;&gt;
     &lt;&lt;/button&gt;&gt;
-&lt;/main&gt;</tw-passagedata><tw-passagedata pid="9" name="1task" tags="" position="1100,100" size="100,100">&lt;p&gt;Task 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="10" name="2task" tags="" position="1225,100" size="100,100">&lt;p&gt;Task 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="11" name="3task" tags="" position="100,225" size="100,100">&lt;p&gt;Task 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="12" name="4task" tags="" position="225,225" size="100,100">&lt;p&gt;Task 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="13" name="5task" tags="" position="350,225" size="100,100">&lt;p&gt;Task 5 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="14" name="6task" tags="" position="475,225" size="100,100">&lt;p&gt;Task 6 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="15" name="7task" tags="" position="600,225" size="100,100">&lt;p&gt;Task 7 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="16" name="8task" tags="" position="725,225" size="100,100">&lt;p&gt;Task 8 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="17" name="9task" tags="" position="850,225" size="100,100">&lt;p&gt;Task 9 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="18" name="10task" tags="" position="975,225" size="100,100">&lt;p&gt;Task 10 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="19" name="11task" tags="" position="1100,225" size="100,100">&lt;p&gt;Task 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="20" name="12task" tags="" position="1225,225" size="100,100">&lt;p&gt;Task 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="21" name="13task" tags="" position="100,350" size="100,100">&lt;p&gt;Task 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="22" name="14task" tags="" position="225,350" size="100,100">&lt;p&gt;Task 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="23" name="15task" tags="" position="350,350" size="100,100">&lt;p&gt;Task 5 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="24" name="16task" tags="" position="475,350" size="100,100">&lt;p&gt;Task 6 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="25" name="17task" tags="" position="600,350" size="100,100">&lt;p&gt;Task 7 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="26" name="18task" tags="" position="725,350" size="100,100">&lt;p&gt;Task 8 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="27" name="19task" tags="" position="850,350" size="100,100">&lt;p&gt;Task 9 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="28" name="20task" tags="" position="975,350" size="100,100">&lt;p&gt;Task 10 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="29" name="21task" tags="" position="1100,350" size="100,100">&lt;p&gt;Task 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="30" name="22task" tags="" position="1225,350" size="100,100">&lt;p&gt;Task 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="31" name="23task" tags="" position="100,475" size="100,100">&lt;p&gt;Task 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="32" name="24task" tags="" position="225,475" size="100,100">&lt;p&gt;Task 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="33" name="25task" tags="" position="350,475" size="100,100">&lt;p&gt;Task 5 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;
+&lt;/main&gt;</tw-passagedata><tw-passagedata pid="10" name="1task" tags="" position="1225,100" size="100,100">&lt;p&gt;Task 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="11" name="2task" tags="" position="100,225" size="100,100">&lt;p&gt;Task 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="12" name="3task" tags="" position="225,225" size="100,100">&lt;p&gt;Task 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="13" name="4task" tags="" position="350,225" size="100,100">&lt;p&gt;Task 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="14" name="5task" tags="" position="475,225" size="100,100">&lt;p&gt;Task 5 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="15" name="6task" tags="" position="600,225" size="100,100">&lt;p&gt;Task 6 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="16" name="7task" tags="" position="725,225" size="100,100">&lt;p&gt;Task 7 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="17" name="8task" tags="" position="850,225" size="100,100">&lt;p&gt;Task 8 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="18" name="9task" tags="" position="975,225" size="100,100">&lt;p&gt;Task 9 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="19" name="10task" tags="" position="1100,225" size="100,100">&lt;p&gt;Task 10 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="20" name="11task" tags="" position="1225,225" size="100,100">&lt;p&gt;Task 11 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="21" name="12task" tags="" position="100,350" size="100,100">&lt;p&gt;Task 12 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="22" name="13task" tags="" position="225,350" size="100,100">&lt;p&gt;Task 13 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="23" name="14task" tags="" position="350,350" size="100,100">&lt;p&gt;Task 14 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="24" name="15task" tags="" position="475,350" size="100,100">&lt;p&gt;Task 15 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="25" name="16task" tags="" position="600,350" size="100,100">&lt;p&gt;Task 16 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="26" name="17task" tags="" position="725,350" size="100,100">&lt;p&gt;Task 17 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="27" name="18task" tags="" position="850,350" size="100,100">&lt;p&gt;Task 18 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="28" name="19task" tags="" position="975,350" size="100,100">&lt;p&gt;Task 19 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="29" name="20task" tags="" position="1100,350" size="100,100">&lt;p&gt;Task 20 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="30" name="21task" tags="" position="1225,350" size="100,100">&lt;p&gt;Task 21 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="31" name="22task" tags="" position="100,475" size="100,100">&lt;p&gt;Task 22 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="32" name="23task" tags="" position="225,475" size="100,100">&lt;p&gt;Task 23 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="33" name="24task" tags="" position="350,475" size="100,100">&lt;p&gt;Task 24 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="34" name="25task" tags="" position="475,475" size="100,100">&lt;p&gt;Task 25 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;
 
 /* :: 1 [nobr]
 &lt;main&gt;
@@ -203,13 +247,22 @@ $(document.head).find('#style-ui-bar').remove();
        &lt;&lt;set $tasks[$current].complete to false&gt;&gt;
         &lt;&lt;goto &quot;bingo&quot;&gt;&gt;
     &lt;&lt;/button&gt;&gt;
-&lt;/main&gt; */</tw-passagedata><tw-passagedata pid="34" name="_templateTask" tags="nobr" position="475,475" size="100,100">&lt;main&gt;
+&lt;/main&gt; */
+
+
+
+
+/* :: _templateTask[nobr]
+ &lt;main&gt;
 
     &lt;h2&gt;Task $current&lt;/h2&gt;
     &lt;&lt;include $current+&quot;task&quot;&gt;&gt;
 
     &lt;p&gt;Have you completed this task?&lt;/p&gt;
+    $tasks[?].task = $current
+    
     &lt;&lt;button &quot;Yes&quot;&gt;&gt;
+    
        &lt;&lt;set $tasks[$current].complete to true&gt;&gt;
         &lt;&lt;goto &quot;bingo&quot;&gt;&gt;
     &lt;&lt;/button&gt;&gt;
@@ -217,6 +270,28 @@ $(document.head).find('#style-ui-bar').remove();
        &lt;&lt;set $tasks[$current].complete to false&gt;&gt;
         &lt;&lt;goto &quot;bingo&quot;&gt;&gt;
     &lt;&lt;/button&gt;&gt;
+    &lt;/main&gt;
+    */</tw-passagedata><tw-passagedata pid="35" name="_templateTask" tags="nobr" position="600,475" size="100,100">&lt;main&gt;
+
+    &lt;h2&gt;Task $current&lt;/h2&gt;
+    &lt;&lt;include $current+&quot;task&quot;&gt;&gt;
+
+    &lt;p&gt;Have you completed this task?&lt;/p&gt;
+ &lt;&lt;set _taskIndex to $tasks.findIndex(task =&gt; task.task == $current)&gt;&gt;
+
+  &lt;!-- If the task is found, update the completion status --&gt;
+    &lt;&lt;if _taskIndex != -1&gt;&gt;
+        &lt;!-- Task completion buttons --&gt;
+        &lt;&lt;button &quot;Yes&quot;&gt;&gt;
+            &lt;&lt;set $tasks[_taskIndex].complete to true&gt;&gt;
+            &lt;&lt;goto &quot;bingo&quot;&gt;&gt;
+        &lt;&lt;/button&gt;&gt;
+        
+        &lt;&lt;button &quot;No&quot;&gt;&gt;
+            &lt;&lt;set $tasks[_taskIndex].complete to false&gt;&gt;
+            &lt;&lt;goto &quot;bingo&quot;&gt;&gt;
+        &lt;&lt;/button&gt;&gt;
+    &lt;&lt;/if&gt;&gt;
     &lt;/main&gt;</tw-passagedata></tw-storydata>
 	<script id="script-sugarcube" type="text/javascript">
 	/*! SugarCube JS */

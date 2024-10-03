@@ -59,9 +59,9 @@ $(document.head).find('#style-ui-bar').remove();
 :: landing [nobr]
 <<set $task1 to false>>
 <<set $tasks to []>>
-<<for _i to 1; _i lt 26; _i++>>
+<<for _i to 0; _i lt 25; _i++>>
     <<set $tasks.push({
-        task: _i,
+        task: _i + 1,
         complete: false
     })>>
 <</for>>
@@ -87,36 +87,83 @@ $(document.head).find('#style-ui-bar').remove();
 :: bingo[nobr]
 
 <<include "header">>
-<main>
 
+<main>
+<div id="winMount"></div>
 <div class="bingo-container">
-   <<for _i to 1; _i lt 26; _i++>>
+   <<for _i to 0; _i lt 25; _i++>>
     <<capture _i>>
-        <<set $img to "assets/img/" + _i + ".png">>
-        <div class="bingo-square" sc-eval:id="'task' + _i" sc-eval:data-id="_i">
-            <<link [img[$img][_i]]>>
-                <<set $current to _i>>
-                <<goto "_templateTask">>
-            <</link>>
-        </div>
-    <</capture>>
+
+            <<set $img to "assets/img/" + (_i+1) + ".png">>
+            <div class="bingo-square" sc-eval:id="'task' + (_i+1)" sc-eval:data-id="(_i+1)">
+ 
+                <<link [img[$img][_templateTask]]>>
+                    <<set $current to (_i+1)>>
+            
+                <</link>>
+            </div>
+       <</capture>>
+
     <</for>>
 </div>
 
 </main>
+
     <<include "footer">>
 
 <<timed 0.1s>>
 <<include "reviewScores">>
+<<include "checkForWins">>
 <</timed>>
 
 :: reviewScores
 <<for _i to 0; _i lt $tasks.length; _i++>>
     <<if $tasks[_i].complete is true>>
-        <<set $id to "#task" + _i >>
+        <<set $id to "#task" + (_i+1) >>
         <<addclass $id "complete">>
     <</if>>
 <</for>>
+
+:: checkForWins
+<<set _hasWon to false>>
+
+<!-- Check horizontal wins (rows) -->
+<<for _row to 0; _row lt 5; _row++>>
+    <<if $tasks.slice(_row * 5, _row * 5 + 5).every(task => task.complete)>>
+        <<set _hasWon to true>>
+    <</if>>
+<</for>>
+
+<!-- Check vertical wins (columns) -->
+<<for _col to 0; _col lt 5; _col++>>
+    <<set _verticalTasks to []>>
+    <<for _row to 0; _row lt 5; _row++>>
+        <<set _verticalTasks.push($tasks[_row * 5 + _col])>>
+    <</for>>
+    <<if _verticalTasks.every(task => task.complete)>>
+        <<set _hasWon to true>>
+    <</if>>
+<</for>>
+
+<!-- Check diagonal wins -->
+<!-- Top-left to bottom-right diagonal -->
+<<set _diag1 to [$tasks[0], $tasks[6], $tasks[12], $tasks[18], $tasks[24]]>>
+<<if _diag1.every(task => task.complete)>>
+    <<set _hasWon to true>>
+<</if>>
+
+<!-- Top-right to bottom-left diagonal -->
+<<set _diag2 to [$tasks[4], $tasks[8], $tasks[12], $tasks[16], $tasks[20]]>>
+<<if _diag2.every(task => task.complete)>>
+    <<set _hasWon to true>>
+<</if>>
+
+<!-- Display win message if a line is complete -->
+<<if _hasWon is true>>
+ <<replace "#winMount">>
+        <h1>Win!</h1>
+<</replace>>
+<</if>>
 
 
 :: 1 [nobr]
@@ -166,53 +213,49 @@ $(document.head).find('#style-ui-bar').remove();
 <p>Task 10 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 11task
-<p>Task 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 11 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 12task
-<p>Task 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 12 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 13task
-<p>Task 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 13 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 14task
-<p>Task 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 14 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 15task
-<p>Task 5 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 15 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 16task
-<p>Task 6 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 16 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 17task
-<p>Task 7 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 17 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 18task
-<p>Task 8 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 18 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 19task
-<p>Task 9 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 19 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 20task
-<p>Task 10 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
-
-
-:: 10task
-<p>Task 10 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 20 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 21task
-<p>Task 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 21 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 22task
-<p>Task 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 22 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 23task
-<p>Task 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 23 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 24task
-<p>Task 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 24 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 25task
-<p>Task 5 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<p>Task 25 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 /* :: 1 [nobr]
 <main>
@@ -234,14 +277,17 @@ $(document.head).find('#style-ui-bar').remove();
 
 
 
-:: _templateTask[nobr]
+/* :: _templateTask[nobr]
  <main>
 
     <h2>Task $current</h2>
     <<include $current+"task">>
 
     <p>Have you completed this task?</p>
+    $tasks[?].task = $current
+    
     <<button "Yes">>
+    
        <<set $tasks[$current].complete to true>>
         <<goto "bingo">>
     <</button>>
@@ -250,5 +296,28 @@ $(document.head).find('#style-ui-bar').remove();
         <<goto "bingo">>
     <</button>>
     </main>
-   
+    */
 
+:: _templateTask[nobr]
+ <main>
+
+    <h2>Task $current</h2>
+    <<include $current+"task">>
+
+    <p>Have you completed this task?</p>
+ <<set _taskIndex to $tasks.findIndex(task => task.task == $current)>>
+
+  <!-- If the task is found, update the completion status -->
+    <<if _taskIndex != -1>>
+        <!-- Task completion buttons -->
+        <<button "Yes">>
+            <<set $tasks[_taskIndex].complete to true>>
+            <<goto "bingo">>
+        <</button>>
+        
+        <<button "No">>
+            <<set $tasks[_taskIndex].complete to false>>
+            <<goto "bingo">>
+        <</button>>
+    <</if>>
+    </main>

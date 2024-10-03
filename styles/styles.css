@@ -214,7 +214,7 @@ body {
   padding: 1.5rem;
 }
 
-@media screen and (min-width: 700px) {
+/* @media screen and (min-width: 700px) {
  main{
   display: none
 };
@@ -225,4 +225,4 @@ body {
     text-align: center;
     margin-top: 20px;
   }
-}
+} */
