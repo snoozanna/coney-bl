@@ -30,13 +30,18 @@ importScripts(["https://code.jquery.com/jquery-3.5.1.slim.min.js",
 "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"]);
 
 
+:: StoryInit [nobr]
+
+
+
+
 
 :: Story JavaScript [script]
 $('#ui-bar').remove();
 $(document.head).find('#style-ui-bar').remove();
-$(document).on('click', '.bingo-square', function() {
+/* $(document).on('click', '.bingo-square', function() {
     $(this).toggleClass('clicked');
-});
+}); */
 
 
 :: header[nobr]
@@ -52,6 +57,15 @@ $(document).on('click', '.bingo-square', function() {
 
 
 :: landing [nobr]
+<<set $task1 to false>>
+<<set $tasks to []>>
+<<set $icons to >>
+<<for _i to 1; _i lt 25; _i++>>
+    <<set $tasks.push({
+        task: _i,
+        complete: false
+    })>>
+<</for>>
 <div class="desktop-message" style="display: none;">
   <p>Please view this poll on a phone.</p>
 </div>
@@ -72,36 +86,121 @@ $(document).on('click', '.bingo-square', function() {
     <<include "footer">>
 
 :: bingo[nobr]
-<<include "header">>
 
+<<include "header">>
 <main>
+
 <div class="bingo-container">
-    <div class="bingo-square" data-id="1">1</div>
-    <div class="bingo-square" data-id="2">2</div>
-    <div class="bingo-square" data-id="3">3</div>
-    <div class="bingo-square" data-id="4">4</div>
-    <div class="bingo-square" data-id="5">5</div>
-    <div class="bingo-square" data-id="6">6</div>
-    <div class="bingo-square" data-id="7">7</div>
-    <div class="bingo-square" data-id="8">8</div>
-    <div class="bingo-square" data-id="9">9</div>
-    <div class="bingo-square" data-id="10">10</div>
-    <div class="bingo-square" data-id="11">11</div>
-    <div class="bingo-square" data-id="12">12</div>
-    <div class="bingo-square" data-id="13">13</div>
-    <div class="bingo-square" data-id="14">14</div>
-    <div class="bingo-square" data-id="15">15</div>
-    <div class="bingo-square" data-id="16">16</div>
-    <div class="bingo-square" data-id="17">17</div>
-    <div class="bingo-square" data-id="18">18</div>
-    <div class="bingo-square" data-id="19">19</div>
-    <div class="bingo-square" data-id="20">20</div>
-    <div class="bingo-square" data-id="21">21</div>
-    <div class="bingo-square" data-id="22">22</div>
-    <div class="bingo-square" data-id="23">23</div>
-    <div class="bingo-square" data-id="24">24</div>
-    <div class="bingo-square" data-id="25">25</div>
+   <<for _i to 1; _i lt 25; _i++>>
+    <<capture _i>>
+        <<set $img to "assets/img/" + _i + ".png">>
+        <div class="bingo-square" sc-eval:id="'task' + _i" sc-eval:data-id="_i">
+            <<link [img[$img][_i]]>>
+                <<set $current to _i>>
+                <<goto "_templateTask">>
+            <</link>>
+        </div>
+    <</capture>>
+    <</for>>
 </div>
 
 </main>
     <<include "footer">>
+
+<<timed 0.1s>>
+<<include "reviewScores">>
+<</timed>>
+
+:: reviewScores
+<<for _i to 0; _i lt $tasks.length; _i++>>
+    <<if $tasks[_i].complete is true>>
+        <<set $id to "#task" + _i >>
+        <<addclass $id "complete">>
+    <</if>>
+<</for>>
+
+
+:: 1 [nobr]
+<main>
+    <h2>Task 1</h2>
+    
+    <p>Have you completed this task?</p>
+    <<button "Yes">>
+       <<set $task1 to true>>
+       <<set $tasks[_i].complete to true>>
+        <<goto "bingo">>
+    <</button>>
+    <<button "No">>
+       <<set $task1 to false>>
+        <<goto "bingo">>
+    <</button>>
+</main>
+
+:: 1task
+<p>Task 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+
+:: 2task
+<p>Task 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+
+:: 3task
+<p>Task 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+
+:: 4task
+<p>Task 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+
+:: 5task
+<p>Task 5 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+
+:: 6task
+<p>Task 6 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+
+:: 7task
+<p>Task 7 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+
+:: 8task
+<p>Task 8 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+
+:: 9task
+<p>Task 9 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+
+:: 10task
+<p>Task 10 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+
+/* :: 1 [nobr]
+<main>
+    <h2>Task 2</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+    <p>Have you completed this task?</p>
+
+    "current": $tasks[$current].complete
+    <<button "Yes">>
+       <<set $tasks[$current].complete to true>>
+        <<goto "bingo">>
+    <</button>>
+    <<button "No">>
+       <<set $tasks[$current].complete to false>>
+        <<goto "bingo">>
+    <</button>>
+</main> */
+
+
+
+
+:: _templateTask[nobr]
+ <main>
+
+    <h2>Task $current</h2>
+    <<include $current+"task">>
+
+    <p>Have you completed this task?</p>
+    <<button "Yes">>
+       <<set $tasks[$current].complete to true>>
+        <<goto "bingo">>
+    <</button>>
+    <<button "No">>
+       <<set $tasks[$current].complete to false>>
+        <<goto "bingo">>
+    <</button>>
+    </main>
+   
+

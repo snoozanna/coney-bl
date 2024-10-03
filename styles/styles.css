@@ -202,7 +202,7 @@ body {
 }
 
 /* Optional - change color when a square is clicked */
-.bingo-square.clicked {
+.bingo-square.complete {
   background-color: #74b9ff;
   color: #fff;
 }
