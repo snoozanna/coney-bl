@@ -59,7 +59,6 @@ $(document.head).find('#style-ui-bar').remove();
 :: landing [nobr]
 <<set $task1 to false>>
 <<set $tasks to []>>
-<<set $icons to >>
 <<for _i to 1; _i lt 25; _i++>>
     <<set $tasks.push({
         task: _i,
