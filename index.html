@@ -126,7 +126,7 @@ $(document.head).find('#style-ui-bar').remove();
     &lt;&lt;/button&gt;&gt;
 &lt;/footer&gt;</tw-passagedata><tw-passagedata pid="4" name="landing" tags="nobr" position="475,100" size="100,100">&lt;&lt;set $task1 to false&gt;&gt;
 &lt;&lt;set $tasks to []&gt;&gt;
-&lt;&lt;for _i to 1; _i lt 25; _i++&gt;&gt;
+&lt;&lt;for _i to 1; _i lt 26; _i++&gt;&gt;
     &lt;&lt;set $tasks.push({
         task: _i,
         complete: false
@@ -150,7 +150,7 @@ $(document.head).find('#style-ui-bar').remove();
 &lt;main&gt;
 
 &lt;div class=&quot;bingo-container&quot;&gt;
-   &lt;&lt;for _i to 1; _i lt 25; _i++&gt;&gt;
+   &lt;&lt;for _i to 1; _i lt 26; _i++&gt;&gt;
     &lt;&lt;capture _i&gt;&gt;
         &lt;&lt;set $img to &quot;assets/img/&quot; + _i + &quot;.png&quot;&gt;&gt;
         &lt;div class=&quot;bingo-square&quot; sc-eval:id=&quot;&#39;task&#39; + _i&quot; sc-eval:data-id=&quot;_i&quot;&gt;

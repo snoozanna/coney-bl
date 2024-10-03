@@ -59,7 +59,7 @@ $(document.head).find('#style-ui-bar').remove();
 :: landing [nobr]
 <<set $task1 to false>>
 <<set $tasks to []>>
-<<for _i to 1; _i lt 25; _i++>>
+<<for _i to 1; _i lt 26; _i++>>
     <<set $tasks.push({
         task: _i,
         complete: false
@@ -90,7 +90,7 @@ $(document.head).find('#style-ui-bar').remove();
 <main>
 
 <div class="bingo-container">
-   <<for _i to 1; _i lt 25; _i++>>
+   <<for _i to 1; _i lt 26; _i++>>
     <<capture _i>>
         <<set $img to "assets/img/" + _i + ".png">>
         <div class="bingo-square" sc-eval:id="'task' + _i" sc-eval:data-id="_i">
