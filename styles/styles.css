@@ -170,7 +170,7 @@ background: linear-gradient(126deg, rgba(174,165,244,1) 19%, rgba(240,201,246,1)
 
 header{
   text-align: center;
-  padding-block-start: 4rem;
+  /* padding-block-start: 4rem; */
 }
 
 footer{
