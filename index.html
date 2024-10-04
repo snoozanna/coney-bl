@@ -104,30 +104,44 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
 		<div id="init-lacking"><p>Browser lacks capabilities required to play.</p><p>Upgrade or switch to another browser.</p></div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<!-- UUID://B2C40547-C02D-413A-810A-2B2F89FE2075// --><tw-storydata name="British Library Bingo Card" startnode="4" creator="Tweego" creator-version="2.1.1+81d1d71" ifid="B2C40547-C02D-413A-810A-2B2F89FE2075" zoom="1" format="SugarCube" format-version="2.37.0" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">@import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css');
+	<!-- UUID://B2C40547-C02D-413A-810A-2B2F89FE2075// --><tw-storydata name="British Library Bingo Card" startnode="7" creator="Tweego" creator-version="2.1.1+81d1d71" ifid="B2C40547-C02D-413A-810A-2B2F89FE2075" zoom="1" format="SugarCube" format-version="2.37.0" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">@import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css');
 @import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
 @import url("styles/generics.css");
 @import url("styles/styles.css");</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* twine-user-script #1: "UserScript" */
 /* Import external libraries. */
 
-importScripts(["https://code.jquery.com/jquery-3.5.1.slim.min.js",
-"https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js", 
-"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"]);
+// importScripts(["https://code.jquery.com/jquery-3.5.1.slim.min.js",
+// "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js", 
+// "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"]);
 /* twine-user-script #2: "Story JavaScript" */
 $('#ui-bar').remove();
 $(document.head).find('#style-ui-bar').remove();
-/* $(document).on('click', '.bingo-square', function() {
-    $(this).toggleClass('clicked');
-}); */</script><tw-passagedata pid="1" name="StoryInit" tags="nobr" position="100,100" size="100,100"></tw-passagedata><tw-passagedata pid="2" name="header" tags="nobr" position="225,100" size="100,100">&lt;header&gt;
-&lt;h1&gt;BINGO&lt;/h1&gt;
-&lt;span class=&quot;instruction&quot;&gt;Instruction Instruction Instruction&lt;/span&gt;
+var link = document.createElement('link');
+link.rel = 'stylesheet';
+link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css';
+document.head.appendChild(link);</script><tw-passagedata pid="1" name="StoryInit" tags="nobr" position="100,100" size="100,100"></tw-passagedata><tw-passagedata pid="2" name="header" tags="nobr" position="225,100" size="100,100">&lt;header&gt;
+&lt;div id=&quot;winMount&quot;&gt;&lt;h1&gt;...&lt;/h1&gt;&lt;/div&gt;
+&lt;span class=&quot;instruction&quot; id=&quot;instruction&quot;&gt;Get 5 in a row to get Bingo&lt;/span&gt;
 &lt;/header&gt;</tw-passagedata><tw-passagedata pid="3" name="footer" tags="nobr" position="350,100" size="100,100">&lt;footer&gt;
     &lt;&lt;button &quot;Back&quot;&gt;&gt;
         &lt;&lt;goto &quot;landing&quot;&gt;&gt;
     &lt;&lt;/button&gt;&gt;
-&lt;/footer&gt;</tw-passagedata><tw-passagedata pid="4" name="landing" tags="nobr" position="475,100" size="100,100">&lt;&lt;set $task1 to false&gt;&gt;
-&lt;&lt;set $tasks to []&gt;&gt;
+&lt;/footer&gt;</tw-passagedata><tw-passagedata pid="4" name="footerbingo" tags="nobr" position="475,100" size="100,100">&lt;footer&gt;
+    &lt;&lt;button &quot;Back&quot;&gt;&gt;
+        &lt;&lt;goto &quot;bingointro&quot;&gt;&gt;
+    &lt;&lt;/button&gt;&gt;
+&lt;/footer&gt;</tw-passagedata><tw-passagedata pid="5" name="headerintro" tags="nobr" position="600,100" size="100,100">&lt;header&gt;
+&lt;h1&gt;INTRO&lt;/h1&gt;
+&lt;/header&gt;</tw-passagedata><tw-passagedata pid="6" name="footerreplay" tags="nobr" position="725,100" size="100,100">&lt;footer&gt;
+    &lt;div class=&quot;multi-btn&quot;&gt;
+        &lt;&lt;button &quot;Back&quot;&gt;&gt;
+            &lt;&lt;goto &quot;landing&quot;&gt;&gt;
+        &lt;&lt;/button&gt;&gt;
+    
+         &lt;div id=&quot;replayBtnMount&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/footer&gt;</tw-passagedata><tw-passagedata pid="7" name="landing" tags="nobr" position="850,100" size="100,100">&lt;&lt;set $tasks to []&gt;&gt;
 &lt;&lt;for _i to 0; _i lt 25; _i++&gt;&gt;
     &lt;&lt;set $tasks.push({
         task: _i + 1,
@@ -135,23 +149,115 @@ $(document.head).find('#style-ui-bar').remove();
     })&gt;&gt;
 &lt;&lt;/for&gt;&gt;
 &lt;div class=&quot;desktop-message&quot; style=&quot;display: none;&quot;&gt;
-  &lt;p&gt;Please view this poll on a phone.&lt;/p&gt;
+  &lt;p&gt;Please view this on a phone.&lt;/p&gt;
 &lt;/div&gt;
 &lt;main&gt;
 
 
-    &lt;&lt;button &quot;Bingo&quot;&gt;&gt;
+    &lt;&lt;button &quot;Start&quot;&gt;&gt;
+        &lt;&lt;goto &quot;bingointro&quot;&gt;&gt;
+    &lt;&lt;/button&gt;&gt;
+    
+&lt;/main&gt;</tw-passagedata><tw-passagedata pid="8" name="bingointro" tags="nobr" position="975,100" size="100,100">&lt;&lt;include &quot;headerintro&quot;&gt;&gt;
+
+&lt;main class=&quot;intro&quot;&gt;
+&lt;div id=&quot;mount&quot;&gt;&lt;/div&gt;
+&lt;&lt;timed 0.1s&gt;&gt;
+    &lt;&lt;replace &quot;#mount&quot;&gt;&gt;
+         &lt;&lt;type 60ms&gt;&gt;    
+        &lt;p&gt;It’s time to play YCL Bingo&lt;/p&gt;
+          &lt;&lt;/type&gt;&gt;
+    &lt;&lt;/replace&gt;&gt;
+&lt;&lt;/timed&gt;&gt;
+&lt;&lt;timed 5s&gt;&gt;
+    &lt;&lt;append &quot;#mount&quot;&gt;&gt;
+         &lt;&lt;type 50ms&gt;&gt;    
+        &lt;p&gt;In YCL Bingo you click on an icon below and unlock a challenge.&lt;/p&gt;
+          &lt;&lt;/type&gt;&gt;
+    &lt;&lt;/append&gt;&gt;
+&lt;&lt;/timed&gt;&gt;
+
+&lt;&lt;timed 10s&gt;&gt;
+    &lt;&lt;append &quot;#mount&quot;&gt;&gt;
+         &lt;&lt;type 50ms&gt;&gt;    
+        &lt;p&gt;If you want to take that challenge you can - or you can go back to do another you would prefer. &lt;/p&gt;
+          &lt;&lt;/type&gt;&gt;
+    &lt;&lt;/append&gt;&gt;
+&lt;&lt;/timed&gt;&gt;
+
+&lt;&lt;timed 19s&gt;&gt;
+    &lt;&lt;replace &quot;#mount&quot;&gt;&gt;
+         &lt;&lt;type 60ms&gt;&gt;    
+        &lt;p&gt;Complete the challenge and then it is crossed off. &lt;/p&gt;
+          &lt;&lt;/type&gt;&gt;
+    &lt;&lt;/replace&gt;&gt;
+&lt;&lt;/timed&gt;&gt;
+
+&lt;&lt;timed 23s&gt;&gt;
+    &lt;&lt;append &quot;#mount&quot;&gt;&gt;
+         &lt;&lt;type 60ms&gt;&gt;    
+        &lt;p&gt;Get 5 in a row to get Bingo. &lt;/p&gt;
+          &lt;&lt;/type&gt;&gt;
+    &lt;&lt;/append&gt;&gt;
+&lt;&lt;/timed&gt;&gt;
+
+&lt;&lt;timed 28s&gt;&gt;
+    &lt;&lt;append &quot;#mount&quot;&gt;&gt;
+         &lt;&lt;type 60ms&gt;&gt;    
+        &lt;p&gt;Those with Bingo come to Coney’s desk and shout BINGO. &lt;/p&gt;
+          &lt;&lt;/type&gt;&gt;
+    &lt;&lt;/append&gt;&gt;
+&lt;&lt;/timed&gt;&gt;
+
+&lt;&lt;timed 34s&gt;&gt;
+    &lt;&lt;append &quot;#mount&quot;&gt;&gt;
+         &lt;&lt;type 60ms&gt;&gt;    
+        &lt;p&gt;And you’ll get a prize - whilst stocks last! &lt;/p&gt;
+          &lt;&lt;/type&gt;&gt;
+    &lt;&lt;/append&gt;&gt;
+&lt;&lt;/timed&gt;&gt;
+
+&lt;&lt;timed 38s&gt;&gt;
+    &lt;&lt;append &quot;#mount&quot;&gt;&gt;
+         &lt;&lt;type 50ms&gt;&gt;    
+        &lt;p&gt;(We will check if you did the challenges so you can’t cheat!) &lt;/p&gt;
+          &lt;&lt;/type&gt;&gt;
+    &lt;&lt;/append&gt;&gt;
+&lt;&lt;/timed&gt;&gt;
+
+&lt;&lt;timed 45s&gt;&gt;
+    &lt;&lt;replace &quot;#mount&quot;&gt;&gt;
+         &lt;&lt;type 50ms&gt;&gt;    
+        &lt;p&gt;When you understand, click below for your BINGO card&lt;/p&gt;
+        &lt;br/&gt;
+         &lt;&lt;button &quot;Bingo&quot;&gt;&gt;
         &lt;&lt;goto &quot;bingo&quot;&gt;&gt;
     &lt;&lt;/button&gt;&gt;
-        &lt;&lt;button &quot;Mentimeter&quot;&gt;&gt;
-        &lt;&lt;goto &quot;mentimeter&quot;&gt;&gt;
-    &lt;&lt;/button&gt;&gt;
-&lt;/main&gt;</tw-passagedata><tw-passagedata pid="5" name="mentimeter" tags="nobr" position="600,100" size="100,100">&lt;div class=&quot;menti-wrapper&quot;&gt;&lt;iframe src=&quot;https://www.menti.com/alufmwvidw87&quot; width=&quot;100%&quot; height=&quot;500px&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;
+      
+          &lt;&lt;/type&gt;&gt;
+    &lt;&lt;/replace&gt;&gt;
+&lt;&lt;/timed&gt;&gt;
 
-    &lt;&lt;include &quot;footer&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="6" name="bingo" tags="nobr" position="725,100" size="100,100">&lt;&lt;include &quot;header&quot;&gt;&gt;
+&lt;&lt;timed 51s&gt;&gt;
+    &lt;&lt;replace &quot;#replayBtnMount&quot;&gt;&gt;
+      &lt;&lt;button &quot;Replay&quot;&gt;&gt;
+        &lt;&lt;goto &quot;bingointro&quot;&gt;&gt;
+    &lt;&lt;/button&gt;&gt;
+    &lt;&lt;/replace&gt;&gt;
+&lt;&lt;/timed&gt;&gt;
+
+
+&lt;/main&gt;
+    &lt;&lt;include &quot;footerreplay&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="9" name="mentimeter" tags="nobr" position="1100,100" size="100,100">&lt;div class=&quot;menti-wrapper&quot;&gt;&lt;iframe src=&quot;https://www.menti.com/alufmwvidw87&quot; width=&quot;100%&quot; height=&quot;500px&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;
+
+    &lt;&lt;include &quot;footer&quot;&gt;&gt;
+
+/* :: bingo[nobr]
+
+&lt;&lt;include &quot;header&quot;&gt;&gt;
 
 &lt;main&gt;
-&lt;div id=&quot;winMount&quot;&gt;&lt;/div&gt;
+
 &lt;div class=&quot;bingo-container&quot;&gt;
    &lt;&lt;for _i to 0; _i lt 25; _i++&gt;&gt;
     &lt;&lt;capture _i&gt;&gt;
@@ -168,22 +274,66 @@ $(document.head).find('#style-ui-bar').remove();
 
     &lt;&lt;/for&gt;&gt;
 &lt;/div&gt;
-
+&lt;div id=&quot;lowerInstruction&quot;&gt;&lt;/div&gt;
 &lt;/main&gt;
 
-    &lt;&lt;include &quot;footer&quot;&gt;&gt;
+    &lt;&lt;include &quot;footerbingo&quot;&gt;&gt;
 
 &lt;&lt;silently&gt;&gt;
     &lt;&lt;timed 0.1s&gt;&gt;
         &lt;&lt;include &quot;reviewScores&quot;&gt;&gt;
         &lt;&lt;include &quot;checkForWins&quot;&gt;&gt;
     &lt;&lt;/timed&gt;&gt;
-&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="7" name="reviewScores" tags="nobr" position="850,100" size="100,100">&lt;&lt;for _i to 0; _i lt $tasks.length; _i++&gt;&gt;
+&lt;&lt;/silently&gt;&gt; */</tw-passagedata><tw-passagedata pid="10" name="bingo" tags="nobr" position="1225,100" size="100,100">&lt;&lt;include &quot;header&quot;&gt;&gt;
+
+&lt;main&gt;
+
+&lt;div class=&quot;bingo-container&quot;&gt;
+   &lt;&lt;set $taskOrder to [1, 5, 3, 14, 12, 6, 9, 8, 1, 11, 7, 13, 15, 3, 4, 2, 8, 6, 4, 10, 5, 3, 11, 10, 15]&gt;&gt;
+
+   &lt;&lt;for _i to 0; _i lt $taskOrder.length; _i++&gt;&gt;
+       &lt;&lt;capture _i&gt;&gt;
+
+           &lt;&lt;set $img to &quot;assets/img/&quot; + ($taskOrder[_i]) + &quot;.png&quot;&gt;&gt;
+           &lt;div sc-eval:class=&quot;&#39;bingo-square task&#39; + ($taskOrder[_i])&quot; sc-eval:id=&quot;&#39;task&#39; + ($taskOrder[_i])&quot; sc-eval:data-id=&quot;$taskOrder[_i]&quot;&gt;
+       
+               &lt;&lt;link [img[$img][_templateTask]]&gt;&gt;
+                   &lt;&lt;set $current to $taskOrder[_i]&gt;&gt;
+               &lt;&lt;/link&gt;&gt;
+           &lt;/div&gt;
+       &lt;&lt;/capture&gt;&gt;
+   &lt;&lt;/for&gt;&gt;
+&lt;/div&gt;
+&lt;div id=&quot;lowerInstruction&quot;&gt;&lt;/div&gt;
+&lt;/main&gt;
+
+&lt;&lt;include &quot;footerbingo&quot;&gt;&gt;
+
+&lt;&lt;silently&gt;&gt;
+    &lt;&lt;timed 0.1s&gt;&gt;
+        &lt;&lt;include &quot;reviewScores&quot;&gt;&gt;
+        &lt;&lt;include &quot;checkForWins&quot;&gt;&gt;
+    &lt;&lt;/timed&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="11" name="reviewScores" tags="nobr" position="100,225" size="100,100">&lt;&lt;for _i to 0; _i lt $tasks.length; _i++&gt;&gt;
     &lt;&lt;if $tasks[_i].complete is true&gt;&gt;
-        &lt;&lt;set $id to &quot;#task&quot; + (_i+1) &gt;&gt;
-        &lt;&lt;addclass $id &quot;complete&quot;&gt;&gt;
+        &lt;&lt;set $class to &quot;.task&quot; + (_i+1) &gt;&gt;
+        &lt;&lt;addclass $class &quot;complete&quot;&gt;&gt;
     &lt;&lt;/if&gt;&gt;
-&lt;&lt;/for&gt;&gt;</tw-passagedata><tw-passagedata pid="8" name="checkForWins" tags="nobr" position="975,100" size="100,100">&lt;&lt;set _hasWon to false&gt;&gt;
+&lt;&lt;/for&gt;&gt;
+
+
+/* :: reviewScores [nobr]
+&lt;&lt;for _i to 0; _i lt $tasks.length; _i++&gt;&gt;
+    &lt;&lt;if $tasks[_i].complete is true&gt;&gt;
+        &lt;&lt;set $taskId to $tasks[_i].task&gt;&gt;
+        &lt;&lt;for _j to 0; _j lt $tasks.length; _j++&gt;&gt;
+            &lt;&lt;if $tasks[_j].task == $taskId&gt;&gt;
+                &lt;&lt;set $id to &quot;#task&quot; + (_j + 1)&gt;&gt;
+                &lt;&lt;addclass $id &quot;complete&quot;&gt;&gt;
+            &lt;&lt;/if&gt;&gt;
+        &lt;&lt;/for&gt;&gt;
+    &lt;&lt;/if&gt;&gt;
+&lt;&lt;/for&gt;&gt; */</tw-passagedata><tw-passagedata pid="12" name="checkForWins" tags="nobr" position="225,225" size="100,100">&lt;&lt;set _hasWon to false&gt;&gt;
 
 &lt;!-- Check horizontal wins (rows) --&gt;
 &lt;&lt;for _row to 0; _row lt 5; _row++&gt;&gt;
@@ -218,12 +368,21 @@ $(document.head).find('#style-ui-bar').remove();
 
 &lt;!-- Display win message if a line is complete --&gt;
 &lt;&lt;if _hasWon is true&gt;&gt;
+    &lt;&lt;addclass &quot;body&quot; &quot;win&quot;&gt;&gt;
  &lt;&lt;replace &quot;#winMount&quot;&gt;&gt;
-        &lt;h1&gt;Win!&lt;/h1&gt;
+        &lt;h1&gt;BINGO!&lt;/h1&gt;
 &lt;&lt;/replace&gt;&gt;
-&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="9" name="headerTask" tags="nobr" position="1100,100" size="100,100">&lt;header&gt;
-    &lt;h2&gt;Task $current&lt;/h2&gt;
-&lt;/header&gt;</tw-passagedata><tw-passagedata pid="10" name="_templateTask" tags="nobr" position="1225,100" size="100,100">&lt;&lt;include &quot;headerTask&quot;&gt;&gt; 
+ &lt;&lt;replace &quot;#instruction&quot;&gt;&gt;
+        &lt;span&gt;You did it&lt;/span&gt;
+&lt;&lt;/replace&gt;&gt;
+&lt;&lt;replace &quot;#lowerInstruction&quot;&gt;&gt;
+    &lt;p class=&quot;instruction&quot;&gt;Head to the Coney table and scan the QR code to register your interest in cohort 2 &amp; then you’ll receive your prize. &lt;/p&gt;
+    &lt;&lt;/replace&gt;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="13" name="headerTask" tags="nobr" position="350,225" size="100,100">&lt;&lt;set $headerimg to &quot;assets/img/&quot; + $current + &quot;.png&quot;&gt;&gt;
+&lt;header class=&quot;task&quot;&gt;
+    &lt;h2&gt;$current&lt;/h2&gt;
+   &lt;div class=&quot;header-img-wrapper&quot;&gt;[img[$headerimg]]&lt;/div&gt;
+&lt;/header&gt;</tw-passagedata><tw-passagedata pid="14" name="_templateTask" tags="nobr" position="475,225" size="100,100">&lt;&lt;include &quot;headerTask&quot;&gt;&gt; 
 &lt;main&gt;
      &lt;&lt;include $current+&quot;task&quot;&gt;&gt;
      &lt;br/&gt;&lt;br/&gt;
@@ -243,7 +402,7 @@ $(document.head).find('#style-ui-bar').remove();
             &lt;&lt;goto &quot;bingo&quot;&gt;&gt;
         &lt;&lt;/button&gt;&gt;
     &lt;&lt;/if&gt;&gt;
-    &lt;/main&gt;</tw-passagedata><tw-passagedata pid="11" name="1" tags="nobr" position="100,225" size="100,100">&lt;main&gt;
+    &lt;/main&gt;</tw-passagedata><tw-passagedata pid="15" name="1" tags="nobr" position="600,225" size="100,100">&lt;main&gt;
     &lt;h2&gt;Task 1&lt;/h2&gt;
     
     &lt;p&gt;Have you completed this task?&lt;/p&gt;
@@ -256,7 +415,22 @@ $(document.head).find('#style-ui-bar').remove();
        &lt;&lt;set $task1 to false&gt;&gt;
         &lt;&lt;goto &quot;bingo&quot;&gt;&gt;
     &lt;&lt;/button&gt;&gt;
-&lt;/main&gt;</tw-passagedata><tw-passagedata pid="12" name="1task" tags="" position="225,225" size="100,100">&lt;p&gt;Task 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="13" name="2task" tags="" position="350,225" size="100,100">&lt;p&gt;Task 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="14" name="3task" tags="" position="475,225" size="100,100">&lt;p&gt;Task 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="15" name="4task" tags="" position="600,225" size="100,100">&lt;p&gt;Task 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="16" name="5task" tags="" position="725,225" size="100,100">&lt;p&gt;Task 5 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="17" name="6task" tags="" position="850,225" size="100,100">&lt;p&gt;Task 6 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="18" name="7task" tags="" position="975,225" size="100,100">&lt;p&gt;Task 7 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="19" name="8task" tags="" position="1100,225" size="100,100">&lt;p&gt;Task 8 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="20" name="9task" tags="" position="1225,225" size="100,100">&lt;p&gt;Task 9 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="21" name="10task" tags="" position="100,350" size="100,100">&lt;p&gt;Task 10 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="22" name="11task" tags="" position="225,350" size="100,100">&lt;p&gt;Task 11 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="23" name="12task" tags="" position="350,350" size="100,100">&lt;p&gt;Task 12 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="24" name="13task" tags="" position="475,350" size="100,100">&lt;p&gt;Task 13 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="25" name="14task" tags="" position="600,350" size="100,100">&lt;p&gt;Task 14 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="26" name="15task" tags="" position="725,350" size="100,100">&lt;p&gt;Task 15 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="27" name="16task" tags="" position="850,350" size="100,100">&lt;p&gt;Task 16 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="28" name="17task" tags="" position="975,350" size="100,100">&lt;p&gt;Task 17 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="29" name="18task" tags="" position="1100,350" size="100,100">&lt;p&gt;Task 18 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="30" name="19task" tags="" position="1225,350" size="100,100">&lt;p&gt;Task 19 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="31" name="20task" tags="" position="100,475" size="100,100">&lt;p&gt;Task 20 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="32" name="21task" tags="" position="225,475" size="100,100">&lt;p&gt;Task 21 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="33" name="22task" tags="" position="350,475" size="100,100">&lt;p&gt;Task 22 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="34" name="23task" tags="" position="475,475" size="100,100">&lt;p&gt;Task 23 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="35" name="24task" tags="" position="600,475" size="100,100">&lt;p&gt;Task 24 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="36" name="25task" tags="" position="725,475" size="100,100">&lt;p&gt;Task 25 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;
+&lt;/main&gt;</tw-passagedata><tw-passagedata pid="16" name="1task" tags="nobr" position="725,225" size="100,100">&lt;h3&gt;Capture the Mural&lt;/h3&gt;
+&lt;p&gt;Take a picture of your favourite part of the mural!&lt;/p&gt;</tw-passagedata><tw-passagedata pid="17" name="2task" tags="" position="850,225" size="100,100">&lt;h3&gt;Engage with Staff&lt;/h3&gt;
+&lt;p&gt;Ask a British Library staff member for their favourite fact about the building or their job and write it down.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="18" name="3task" tags="" position="975,225" size="100,100">&lt;h3&gt;Capture the Moment&lt;/h3&gt;
+&lt;p&gt;Take a photo of a standout moment from the event and share it on social media with the hashtag #YoungCreatorsLab&lt;/p&gt;</tw-passagedata><tw-passagedata pid="19" name="4task" tags="" position="1100,225" size="100,100">&lt;h3&gt;Join the Conversation&lt;/h3&gt;
+&lt;p&gt;Comment on a Young Creators Lab video on TikTok.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="20" name="5task" tags="" position="1225,225" size="100,100">&lt;h3&gt;Share Your Thoughts&lt;/h3&gt;
+&lt;p&gt;Visit the Evaluation Wall, add your feedback, and take a photo of your contribution.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="21" name="6task" tags="" position="100,350" size="100,100">&lt;h3&gt;Fashion Match&lt;/h3&gt;
+&lt;p&gt;Snap a photo in the photo booth with someone wearing a similar outfit to yours.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="22" name="7task" tags="" position="225,350" size="100,100">&lt;h3&gt;Make a Connection&lt;/h3&gt;
+&lt;p&gt;Meet someone new and discover the most interesting thing you both have in common (no aesthetics allowed!).&lt;/p&gt;</tw-passagedata><tw-passagedata pid="23" name="8task" tags="" position="350,350" size="100,100">&lt;h3&gt;Network&lt;/h3&gt;
+&lt;p&gt;Find someone in your field and exchange email addresses or social media handles.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="24" name="9task" tags="" position="475,350" size="100,100">&lt;h3&gt;Capture Inspiration&lt;/h3&gt;
+&lt;p&gt;Spend a few moments by Talkaoke and write down a standout quote you hear.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="25" name="10task" tags="" position="600,350" size="100,100">&lt;h3&gt;Gather Your Crew&lt;/h3&gt;
+&lt;p&gt;Assemble a group of four people wearing the same colour to take a picture at the Coney table.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="26" name="11task" tags="" position="725,350" size="100,100">&lt;h3&gt;Meet the Radio Producer&lt;/h3&gt;
+&lt;p&gt;In the Zine, locate the person who loves remixing Caribbean genres and Soca. Approach them and say, “Are you the voice of the Big Brother adverts?”&lt;/p&gt;</tw-passagedata><tw-passagedata pid="27" name="12task" tags="" position="850,350" size="100,100">&lt;h3&gt; Roller Skating Tips&lt;/h3&gt;
+&lt;p&gt;Find the person in the Zine who enjoys roller skating and ask, “Do you have any roller skating tips?”&lt;/p&gt;</tw-passagedata><tw-passagedata pid="28" name="13task" tags="" position="975,350" size="100,100">&lt;h3&gt;Social Media Insights&lt;/h3&gt;
+&lt;p&gt;Ask a stranger about their favourite and least favourite social media platforms, and why.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="29" name="14task" tags="" position="1100,350" size="100,100">&lt;h3&gt;Connect with Creators&lt;/h3&gt;
+&lt;p&gt;Find a young creator and ask them about their highlight of the program, a top tip they learned, or a creative insight.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="30" name="15task" tags="" position="1225,350" size="100,100">&lt;h3&gt; Share Recommendations&lt;/h3&gt;
+&lt;p&gt;Exchange book, song, or film/TV show recommendations with someone new.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="31" name="16task" tags="" position="100,475" size="100,100">&lt;p&gt;Task 16 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="32" name="17task" tags="" position="225,475" size="100,100">&lt;p&gt;Task 17 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="33" name="18task" tags="" position="350,475" size="100,100">&lt;p&gt;Task 18 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="34" name="19task" tags="" position="475,475" size="100,100">&lt;p&gt;Task 19 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="35" name="20task" tags="" position="600,475" size="100,100">&lt;p&gt;Task 20 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="36" name="21task" tags="" position="725,475" size="100,100">&lt;p&gt;Task 21 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="37" name="22task" tags="" position="850,475" size="100,100">&lt;p&gt;Task 22 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="38" name="23task" tags="" position="975,475" size="100,100">&lt;p&gt;Task 23 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="39" name="24task" tags="" position="1100,475" size="100,100">&lt;p&gt;Task 24 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="40" name="25task" tags="" position="1225,475" size="100,100">&lt;p&gt;Task 25 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;
 
 /* :: 1 [nobr]
 &lt;main&gt;

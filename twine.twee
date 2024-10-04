@@ -25,9 +25,9 @@ British Library Bingo Card
 :: UserScript [script]
 /* Import external libraries. */
 
-importScripts(["https://code.jquery.com/jquery-3.5.1.slim.min.js",
-"https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js", 
-"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"]);
+// importScripts(["https://code.jquery.com/jquery-3.5.1.slim.min.js",
+// "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js", 
+// "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"]);
 
 
 :: StoryInit [nobr]
@@ -39,15 +39,16 @@ importScripts(["https://code.jquery.com/jquery-3.5.1.slim.min.js",
 :: Story JavaScript [script]
 $('#ui-bar').remove();
 $(document.head).find('#style-ui-bar').remove();
-/* $(document).on('click', '.bingo-square', function() {
-    $(this).toggleClass('clicked');
-}); */
+var link = document.createElement('link');
+link.rel = 'stylesheet';
+link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css';
+document.head.appendChild(link);
 
 
 :: header[nobr]
 <header>
-<h1>BINGO</h1>
-<span class="instruction">Instruction Instruction Instruction</span>
+<div id="winMount"><h1>...</h1></div>
+<span class="instruction" id="instruction">Get 5 in a row to get Bingo</span>
 </header>
 
 :: footer[nobr]
@@ -57,9 +58,31 @@ $(document.head).find('#style-ui-bar').remove();
     <</button>>
 </footer>
 
+:: footerbingo[nobr]
+<footer>
+    <<button "Back">>
+        <<goto "bingointro">>
+    <</button>>
+</footer>
+
+:: headerintro[nobr]
+<header>
+<h1>INTRO</h1>
+</header>
+
+:: footerreplay[nobr]
+<footer>
+    <div class="multi-btn">
+        <<button "Back">>
+            <<goto "landing">>
+        <</button>>
+    
+         <div id="replayBtnMount"></div>
+    </div>
+</footer>
+
 
 :: landing [nobr]
-<<set $task1 to false>>
 <<set $tasks to []>>
 <<for _i to 0; _i lt 25; _i++>>
     <<set $tasks.push({
@@ -68,30 +91,122 @@ $(document.head).find('#style-ui-bar').remove();
     })>>
 <</for>>
 <div class="desktop-message" style="display: none;">
-  <p>Please view this poll on a phone.</p>
+  <p>Please view this on a phone.</p>
 </div>
 <main>
 
 
-    <<button "Bingo">>
+    <<button "Start">>
+        <<goto "bingointro">>
+    <</button>>
+    
+</main>
+
+:: bingointro [nobr]
+<<include "headerintro">>
+
+<main class="intro">
+<div id="mount"></div>
+<<timed 0.1s>>
+    <<replace "#mount">>
+         <<type 60ms>>    
+        <p>It’s time to play YCL Bingo</p>
+          <</type>>
+    <</replace>>
+<</timed>>
+<<timed 5s>>
+    <<append "#mount">>
+         <<type 50ms>>    
+        <p>In YCL Bingo you click on an icon below and unlock a challenge.</p>
+          <</type>>
+    <</append>>
+<</timed>>
+
+<<timed 10s>>
+    <<append "#mount">>
+         <<type 50ms>>    
+        <p>If you want to take that challenge you can - or you can go back to do another you would prefer. </p>
+          <</type>>
+    <</append>>
+<</timed>>
+
+<<timed 19s>>
+    <<replace "#mount">>
+         <<type 60ms>>    
+        <p>Complete the challenge and then it is crossed off. </p>
+          <</type>>
+    <</replace>>
+<</timed>>
+
+<<timed 23s>>
+    <<append "#mount">>
+         <<type 60ms>>    
+        <p>Get 5 in a row to get Bingo. </p>
+          <</type>>
+    <</append>>
+<</timed>>
+
+<<timed 28s>>
+    <<append "#mount">>
+         <<type 60ms>>    
+        <p>Those with Bingo come to Coney’s desk and shout BINGO. </p>
+          <</type>>
+    <</append>>
+<</timed>>
+
+<<timed 34s>>
+    <<append "#mount">>
+         <<type 60ms>>    
+        <p>And you’ll get a prize - whilst stocks last! </p>
+          <</type>>
+    <</append>>
+<</timed>>
+
+<<timed 38s>>
+    <<append "#mount">>
+         <<type 50ms>>    
+        <p>(We will check if you did the challenges so you can’t cheat!) </p>
+          <</type>>
+    <</append>>
+<</timed>>
+
+<<timed 45s>>
+    <<replace "#mount">>
+         <<type 50ms>>    
+        <p>When you understand, click below for your BINGO card</p>
+        <br/>
+         <<button "Bingo">>
         <<goto "bingo">>
     <</button>>
-        <<button "Mentimeter">>
-        <<goto "mentimeter">>
+      
+          <</type>>
+    <</replace>>
+<</timed>>
+
+<<timed 51s>>
+    <<replace "#replayBtnMount">>
+      <<button "Replay">>
+        <<goto "bingointro">>
     <</button>>
+    <</replace>>
+<</timed>>
+
+
 </main>
+    <<include "footerreplay">>
+
 
 :: mentimeter[nobr]
 <div class="menti-wrapper"><iframe src="https://www.menti.com/alufmwvidw87" width="100%" height="500px" frameborder="0" allowfullscreen></iframe></div>
 
     <<include "footer">>
 
-:: bingo[nobr]
+/* :: bingo[nobr]
 
 <<include "header">>
 
 <main>
-<div id="winMount"></div>
+
 <div class="bingo-container">
    <<for _i to 0; _i lt 25; _i++>>
     <<capture _i>>
@@ -108,10 +223,44 @@ $(document.head).find('#style-ui-bar').remove();
 
     <</for>>
 </div>
-
+<div id="lowerInstruction"></div>
 </main>
 
-    <<include "footer">>
+    <<include "footerbingo">>
+
+<<silently>>
+    <<timed 0.1s>>
+        <<include "reviewScores">>
+        <<include "checkForWins">>
+    <</timed>>
+<</silently>> */
+
+:: bingo[nobr]
+
+<<include "header">>
+
+<main>
+
+<div class="bingo-container">
+   <<set $taskOrder to [1, 5, 3, 14, 12, 6, 9, 8, 1, 11, 7, 13, 15, 3, 4, 2, 8, 6, 4, 10, 5, 3, 11, 10, 15]>>
+
+   <<for _i to 0; _i lt $taskOrder.length; _i++>>
+       <<capture _i>>
+
+           <<set $img to "assets/img/" + ($taskOrder[_i]) + ".png">>
+           <div sc-eval:class="'bingo-square task' + ($taskOrder[_i])" sc-eval:id="'task' + ($taskOrder[_i])" sc-eval:data-id="$taskOrder[_i]">
+       
+               <<link [img[$img][_templateTask]]>>
+                   <<set $current to $taskOrder[_i]>>
+               <</link>>
+           </div>
+       <</capture>>
+   <</for>>
+</div>
+<div id="lowerInstruction"></div>
+</main>
+
+<<include "footerbingo">>
 
 <<silently>>
     <<timed 0.1s>>
@@ -119,13 +268,29 @@ $(document.head).find('#style-ui-bar').remove();
         <<include "checkForWins">>
     <</timed>>
 <</silently>>
+
+
 :: reviewScores [nobr]
 <<for _i to 0; _i lt $tasks.length; _i++>>
     <<if $tasks[_i].complete is true>>
-        <<set $id to "#task" + (_i+1) >>
-        <<addclass $id "complete">>
+        <<set $class to ".task" + (_i+1) >>
+        <<addclass $class "complete">>
     <</if>>
 <</for>>
+
+
+/* :: reviewScores [nobr]
+<<for _i to 0; _i lt $tasks.length; _i++>>
+    <<if $tasks[_i].complete is true>>
+        <<set $taskId to $tasks[_i].task>>
+        <<for _j to 0; _j lt $tasks.length; _j++>>
+            <<if $tasks[_j].task == $taskId>>
+                <<set $id to "#task" + (_j + 1)>>
+                <<addclass $id "complete">>
+            <</if>>
+        <</for>>
+    <</if>>
+<</for>> */
 
 :: checkForWins [nobr]
 <<set _hasWon to false>>
@@ -163,15 +328,25 @@ $(document.head).find('#style-ui-bar').remove();
 
 <!-- Display win message if a line is complete -->
 <<if _hasWon is true>>
+    <<addclass "body" "win">>
  <<replace "#winMount">>
-        <h1>Win!</h1>
+        <h1>BINGO!</h1>
 <</replace>>
+ <<replace "#instruction">>
+        <span>You did it</span>
+<</replace>>
+<<replace "#lowerInstruction">>
+    <p class="instruction">Head to the Coney table and scan the QR code to register your interest in cohort 2 & then you’ll receive your prize. </p>
+    <</replace>>
 <</if>>
 
 
+
 :: headerTask [nobr]
-<header>
-    <h2>Task $current</h2>
+ <<set $headerimg to "assets/img/" + $current + ".png">>
+<header class="task">
+    <h2>$current</h2>
+   <div class="header-img-wrapper">[img[$headerimg]]</div>
 </header>
 
 :: _templateTask[nobr]
@@ -214,52 +389,68 @@ $(document.head).find('#style-ui-bar').remove();
     <</button>>
 </main>
 
-:: 1task
-<p>Task 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+:: 1task[nobr]
+<h3>Capture the Mural</h3>
+<p>Take a picture of your favourite part of the mural!</p>
 
 :: 2task
-<p>Task 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3>Engage with Staff</h3>
+<p>Ask a British Library staff member for their favourite fact about the building or their job and write it down.</p>
 
 :: 3task
-<p>Task 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3>Capture the Moment</h3>
+<p>Take a photo of a standout moment from the event and share it on social media with the hashtag #YoungCreatorsLab</p>
 
 :: 4task
-<p>Task 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3>Join the Conversation</h3>
+<p>Comment on a Young Creators Lab video on TikTok.</p>
 
 :: 5task
-<p>Task 5 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3>Share Your Thoughts</h3>
+<p>Visit the Evaluation Wall, add your feedback, and take a photo of your contribution.</p>
 
 :: 6task
-<p>Task 6 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3>Fashion Match</h3>
+<p>Snap a photo in the photo booth with someone wearing a similar outfit to yours.</p>
 
 :: 7task
-<p>Task 7 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3>Make a Connection</h3>
+<p>Meet someone new and discover the most interesting thing you both have in common (no aesthetics allowed!).</p>
 
 :: 8task
-<p>Task 8 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3>Network</h3>
+<p>Find someone in your field and exchange email addresses or social media handles.</p>
 
 :: 9task
-<p>Task 9 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3>Capture Inspiration</h3>
+<p>Spend a few moments by Talkaoke and write down a standout quote you hear.</p>
 
 :: 10task
-<p>Task 10 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3>Gather Your Crew</h3>
+<p>Assemble a group of four people wearing the same colour to take a picture at the Coney table.</p>
 
 :: 11task
-<p>Task 11 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3>Meet the Radio Producer</h3>
+<p>In the Zine, locate the person who loves remixing Caribbean genres and Soca. Approach them and say, “Are you the voice of the Big Brother adverts?”</p>
 
 :: 12task
-<p>Task 12 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3> Roller Skating Tips</h3>
+<p>Find the person in the Zine who enjoys roller skating and ask, “Do you have any roller skating tips?”</p>
 
 :: 13task
-<p>Task 13 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3>Social Media Insights</h3>
+<p>Ask a stranger about their favourite and least favourite social media platforms, and why.</p>
 
 :: 14task
-<p>Task 14 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3>Connect with Creators</h3>
+<p>Find a young creator and ask them about their highlight of the program, a top tip they learned, or a creative insight.</p>
 
 :: 15task
-<p>Task 15 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
+<h3> Share Recommendations</h3>
+<p>Exchange book, song, or film/TV show recommendations with someone new.</p>
 
 :: 16task
+
 <p>Task 16 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 :: 17task

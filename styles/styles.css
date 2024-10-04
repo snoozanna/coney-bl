@@ -7,7 +7,7 @@
     --color-one: rgb(43, 38, 71);
     /* --color-two: rgb(229, 212, 206); */
     --color-two: rgb(24, 22, 22);
-    --color-three: rgb(222, 110, 75);
+    --color-three: #fbeae5;
     --color-four: rgb(127, 209, 185);
     --color-five: rgb(229, 99, 153);
     --main-bg-color: var(--color-one);
@@ -107,9 +107,9 @@
   
   button,
   .inline-btn-wrapper > a {
-    background-color: var(--color-yellow);
+    background-color: var(--color-three);
     color: var(--color-two);
-    border: var(--color-two) 1px solid;
+    border: var(--color-two) 2px solid;
     border-radius: 3px;
     font-family: var(--font-headings);
     text-transform: uppercase;
@@ -154,11 +154,13 @@ header, footer, main{
 }
 
 body {
-	background-color: #000;
-  background: rgb(174,165,244);
-background: linear-gradient(126deg, rgba(174,165,244,1) 19%, rgba(240,201,246,1) 53%, rgba(245,143,166,1) 79%);
-    /* background-color: #a14506; */
-	/* font-family: "Arcon", monospace; */
+background: rgba(174,165,244,1); 
+background: 
+  /* url('/assets/img/logo2.png') 75% center no-repeat,  */
+  linear-gradient(126deg, rgba(174,165,244,1) 19%, rgba(240,201,246,1) 53%, rgba(245,143,166,1) 79%); /* The gradient */
+
+background-size: contain, cover; /* Size the logo (contain) and gradient (cover) */
+
 	font-size: 10px;
 	height: 100vh;
 	display:flex;
@@ -168,14 +170,26 @@ background: linear-gradient(126deg, rgba(174,165,244,1) 19%, rgba(240,201,246,1)
   overflow: scroll;
 }
 
+body.win{
+  background: rgb(174,165,244);
+  background: radial-gradient(circle, rgba(174,165,244,1) 9%, rgba(245,213,153,1) 53%, rgba(244,143,245,1) 94%);
+}
+
 header{
   text-align: center;
   /* padding-block-start: 4rem; */
 }
 
+
 footer{
   position: fixed;
   bottom: 0;
+}
+
+footer > .multi-btn{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 
@@ -191,6 +205,14 @@ h1{
 h2{
   font-size: 4rem;
 }
+h3{
+  font-size: 2rem;
+}
+
+p{
+  font-size: 1.8rem;
+  font-weight: 400;
+}
 
 .instruction{
   font-size: 2rem ;
@@ -199,17 +221,18 @@ h2{
 
 /* BINGO CARD */
 
-/* Bingo Card Layout using CSS Grid */
 .bingo-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 columns */
-  grid-template-rows: repeat(5, 1fr); /* 5 rows */
-  gap: 10px; /* Space between squares */
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr); 
+  gap: 10px; 
   max-width: 500px;
   margin: 0 auto;
   padding: 20px;
   background-color: #ffcee7;
   border: 2px solid #333;
+  margin-block-end: 3rem;
+  border-radius: 0.5rem;
 }
 
 .bingo-square {
@@ -226,17 +249,49 @@ h2{
   padding: 0.5rem;
 }
 
-.
 
 .bingo-square:hover {
   background-color: #dfe6e9;
 }
 
-/* Optional - change color when a square is clicked */
+
 .bingo-square.complete {
   background-color: #74b9ff;
   color: #fff;
 }
+
+.bingo-square > a> img {
+  width: 100%;
+  filter: invert(1);
+}
+
+.bingo-square.complete > a > img{
+  filter: invert(0);
+}
+
+#lowerInstruction{
+  margin-block-end: 10rem;
+}
+
+/* TASK  */
+header.task{
+  text-align: left;
+  padding-bottom: 0;
+}
+
+header.task > h2{
+  font-size: 6rem;
+}
+
+.header-img-wrapper{
+  width: 70%;
+  position: absolute;
+  opacity: 0.5;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: -99;
+}
+
 
 
 /* MENTIMETER */
