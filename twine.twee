@@ -113,12 +113,13 @@ $(document.head).find('#style-ui-bar').remove();
 
     <<include "footer">>
 
-<<timed 0.1s>>
-<<include "reviewScores">>
-<<include "checkForWins">>
-<</timed>>
-
-:: reviewScores
+<<silently>>
+    <<timed 0.1s>>
+        <<include "reviewScores">>
+        <<include "checkForWins">>
+    <</timed>>
+<</silently>>
+:: reviewScores [nobr]
 <<for _i to 0; _i lt $tasks.length; _i++>>
     <<if $tasks[_i].complete is true>>
         <<set $id to "#task" + (_i+1) >>
@@ -126,7 +127,7 @@ $(document.head).find('#style-ui-bar').remove();
     <</if>>
 <</for>>
 
-:: checkForWins
+:: checkForWins [nobr]
 <<set _hasWon to false>>
 
 <!-- Check horizontal wins (rows) -->

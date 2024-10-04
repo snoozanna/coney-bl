@@ -173,15 +173,17 @@ $(document.head).find('#style-ui-bar').remove();
 
     &lt;&lt;include &quot;footer&quot;&gt;&gt;
 
-&lt;&lt;timed 0.1s&gt;&gt;
-&lt;&lt;include &quot;reviewScores&quot;&gt;&gt;
-&lt;&lt;include &quot;checkForWins&quot;&gt;&gt;
-&lt;&lt;/timed&gt;&gt;</tw-passagedata><tw-passagedata pid="7" name="reviewScores" tags="" position="850,100" size="100,100">&lt;&lt;for _i to 0; _i lt $tasks.length; _i++&gt;&gt;
+&lt;&lt;silently&gt;&gt;
+    &lt;&lt;timed 0.1s&gt;&gt;
+        &lt;&lt;include &quot;reviewScores&quot;&gt;&gt;
+        &lt;&lt;include &quot;checkForWins&quot;&gt;&gt;
+    &lt;&lt;/timed&gt;&gt;
+&lt;&lt;/silently&gt;&gt;</tw-passagedata><tw-passagedata pid="7" name="reviewScores" tags="nobr" position="850,100" size="100,100">&lt;&lt;for _i to 0; _i lt $tasks.length; _i++&gt;&gt;
     &lt;&lt;if $tasks[_i].complete is true&gt;&gt;
         &lt;&lt;set $id to &quot;#task&quot; + (_i+1) &gt;&gt;
         &lt;&lt;addclass $id &quot;complete&quot;&gt;&gt;
     &lt;&lt;/if&gt;&gt;
-&lt;&lt;/for&gt;&gt;</tw-passagedata><tw-passagedata pid="8" name="checkForWins" tags="" position="975,100" size="100,100">&lt;&lt;set _hasWon to false&gt;&gt;
+&lt;&lt;/for&gt;&gt;</tw-passagedata><tw-passagedata pid="8" name="checkForWins" tags="nobr" position="975,100" size="100,100">&lt;&lt;set _hasWon to false&gt;&gt;
 
 &lt;!-- Check horizontal wins (rows) --&gt;
 &lt;&lt;for _row to 0; _row lt 5; _row++&gt;&gt;
