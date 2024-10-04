@@ -16,7 +16,7 @@ British Library Bingo Card
 :: Story Stylesheet [stylesheet]
 @import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css');
-
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
 @import url("styles/generics.css");
 @import url("styles/styles.css");
 
@@ -46,6 +46,8 @@ $(document.head).find('#style-ui-bar').remove();
 
 :: header[nobr]
 <header>
+<h1>BINGO</h1>
+<span class="instruction">Instruction Instruction Instruction</span>
 </header>
 
 :: footer[nobr]
@@ -165,6 +167,35 @@ $(document.head).find('#style-ui-bar').remove();
 <</replace>>
 <</if>>
 
+
+:: headerTask [nobr]
+<header>
+    <h2>Task $current</h2>
+</header>
+
+:: _templateTask[nobr]
+
+<<include "headerTask">> 
+<main>
+     <<include $current+"task">>
+     <br/><br/>
+    <p>Have you completed this task?</p>
+ <<set _taskIndex to $tasks.findIndex(task => task.task == $current)>>
+
+  <!-- If the task is found, update the completion status -->
+    <<if _taskIndex != -1>>
+        <!-- Task completion buttons -->
+        <<button "Yes">>
+            <<set $tasks[_taskIndex].complete to true>>
+            <<goto "bingo">>
+        <</button>>
+        
+        <<button "No">>
+            <<set $tasks[_taskIndex].complete to false>>
+            <<goto "bingo">>
+        <</button>>
+    <</if>>
+    </main>
 
 :: 1 [nobr]
 <main>
@@ -297,27 +328,3 @@ $(document.head).find('#style-ui-bar').remove();
     <</button>>
     </main>
     */
-
-:: _templateTask[nobr]
- <main>
-
-    <h2>Task $current</h2>
-    <<include $current+"task">>
-
-    <p>Have you completed this task?</p>
- <<set _taskIndex to $tasks.findIndex(task => task.task == $current)>>
-
-  <!-- If the task is found, update the completion status -->
-    <<if _taskIndex != -1>>
-        <!-- Task completion buttons -->
-        <<button "Yes">>
-            <<set $tasks[_taskIndex].complete to true>>
-            <<goto "bingo">>
-        <</button>>
-        
-        <<button "No">>
-            <<set $tasks[_taskIndex].complete to false>>
-            <<goto "bingo">>
-        <</button>>
-    <</if>>
-    </main>

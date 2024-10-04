@@ -5,12 +5,13 @@
   
   
     --color-one: rgb(43, 38, 71);
-    --color-two: rgb(229, 212, 206);
+    /* --color-two: rgb(229, 212, 206); */
+    --color-two: rgb(24, 22, 22);
     --color-three: rgb(222, 110, 75);
     --color-four: rgb(127, 209, 185);
     --color-five: rgb(229, 99, 153);
     --main-bg-color: var(--color-one);
-    --font-headings: "JetBrains Mono", monospace;
+    --font-headings: "Rubik Mono One", monospace;
     --font-body: "Poppins", sans-serif;
     --padding: 2rem;
   }
@@ -85,10 +86,10 @@
     height: 100%
   }
   
-  main {
+  /* main {
     height: 100%;
   
-  }
+  } */
   
   a:active {
     background-color: #f2647d;
@@ -154,9 +155,11 @@ header, footer, main{
 
 body {
 	background-color: #000;
+  background: rgb(174,165,244);
+background: linear-gradient(126deg, rgba(174,165,244,1) 19%, rgba(240,201,246,1) 53%, rgba(245,143,166,1) 79%);
     /* background-color: #a14506; */
 	/* font-family: "Arcon", monospace; */
-	/* font-size: 10px; */
+	font-size: 10px;
 	height: 100vh;
 	display:flex;
   color: var(--color-two);
@@ -165,9 +168,34 @@ body {
   overflow: scroll;
 }
 
+header{
+  text-align: center;
+  padding-block-start: 4rem;
+}
+
+footer{
+  position: absolute;
+  bottom: 0;
+}
+
 
 /* TYPOGRAPHY  */
+h1,h2,h3,h4{
+  font-family: var(--font-headings)
+}
 
+h1{
+  font-size: 4rem;
+}
+
+h2{
+  font-size: 4rem;
+}
+
+.instruction{
+  font-size: 2rem ;
+  font-weight: 600;
+}
 
 /* BINGO CARD */
 
@@ -195,7 +223,10 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease;
   border-radius: 0.5rem;
+  padding: 0.5rem;
 }
+
+.
 
 .bingo-square:hover {
   background-color: #dfe6e9;
