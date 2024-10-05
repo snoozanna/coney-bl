@@ -138,22 +138,47 @@ document.head.appendChild(link);</script><tw-passagedata pid="1" name="StoryInit
         &lt;&lt;button &quot;Back&quot;&gt;&gt;
             &lt;&lt;goto &quot;landing&quot;&gt;&gt;
         &lt;&lt;/button&gt;&gt;
-    
+      &lt;&lt;button &quot;Next&quot;&gt;&gt;
+        &lt;&lt;goto &quot;bingo&quot;&gt;&gt;
+    &lt;&lt;/button&gt;&gt;
          &lt;div id=&quot;replayBtnMount&quot;&gt;&lt;/div&gt;
     &lt;/div&gt;
-&lt;/footer&gt;</tw-passagedata><tw-passagedata pid="7" name="landing" tags="nobr" position="850,100" size="100,100">&lt;&lt;set $tasks to []&gt;&gt;
-&lt;&lt;for _i to 0; _i lt 25; _i++&gt;&gt;
+&lt;/footer&gt;</tw-passagedata><tw-passagedata pid="7" name="landing" tags="nobr" position="850,100" size="100,100">/* initiate tasks  */
+&lt;&lt;set $tasks to []&gt;&gt;
+&lt;&lt;for _i to 0; _i lt 15; _i++&gt;&gt;
     &lt;&lt;set $tasks.push({
         task: _i + 1,
         complete: false
     })&gt;&gt;
 &lt;&lt;/for&gt;&gt;
-&lt;div class=&quot;desktop-message&quot; style=&quot;display: none;&quot;&gt;
+/* initiate squares and associate tasks */
+&lt;&lt;set $squares to []&gt;&gt;
+&lt;&lt;set $taskOrder to [1, 5, 3, 14, 12, 6, 9, 8, 1, 11, 7, 13, 15, 3, 4, 2, 8, 6, 4, 10, 5, 3, 11, 10, 15]&gt;&gt;
+&lt;&lt;for _i to 0; _i lt 25; _i++&gt;&gt;
+    /* Find the task object for this square */
+    &lt;&lt;set _taskIndex to $taskOrder[_i] - 1&gt;&gt; &lt;!-- taskOrder contains task numbers 1 to 15, so subtract 1 for index --&gt;
+    &lt;&lt;set _task to $tasks[_taskIndex]&gt;&gt;
+    
+    /* Push square data to $squares array */
+    &lt;&lt;set $squares.push({
+        task: _task.task,
+        complete: _task.complete
+    })&gt;&gt;
+&lt;&lt;/for&gt;&gt;
+
+/* Display the square data for debugging */
+/* &lt;&lt;for _i to 0; _i lt $squares.length; _i++&gt;&gt;
+    Task: &lt;&lt;print $squares[_i].task&gt;&gt;, Complete: &lt;&lt;print $squares[_i].complete&gt;&gt;&lt;br&gt;
+&lt;&lt;/for&gt;&gt; */
+&lt;&lt;addclass &quot;body&quot; &quot;black&quot;&gt;&gt;
+
+&lt;div class=&quot;desktop-message&quot;&gt;
   &lt;p&gt;Please view this on a phone.&lt;/p&gt;
 &lt;/div&gt;
-&lt;main&gt;
-
-
+&lt;main class=&quot;landing&quot;&gt;
+&lt;div class=&quot;logo-wrapper rotate&quot;&gt;
+&lt;img src=&quot;/assets/img/logo2.png&quot; alt=&quot;logo&quot;/&gt;
+&lt;/div&gt;
     &lt;&lt;button &quot;Start&quot;&gt;&gt;
         &lt;&lt;goto &quot;bingointro&quot;&gt;&gt;
     &lt;&lt;/button&gt;&gt;
@@ -250,41 +275,7 @@ document.head.appendChild(link);</script><tw-passagedata pid="1" name="StoryInit
 &lt;/main&gt;
     &lt;&lt;include &quot;footerreplay&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="9" name="mentimeter" tags="nobr" position="1100,100" size="100,100">&lt;div class=&quot;menti-wrapper&quot;&gt;&lt;iframe src=&quot;https://www.menti.com/alufmwvidw87&quot; width=&quot;100%&quot; height=&quot;500px&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;
 
-    &lt;&lt;include &quot;footer&quot;&gt;&gt;
-
-/* :: bingo[nobr]
-
-&lt;&lt;include &quot;header&quot;&gt;&gt;
-
-&lt;main&gt;
-
-&lt;div class=&quot;bingo-container&quot;&gt;
-   &lt;&lt;for _i to 0; _i lt 25; _i++&gt;&gt;
-    &lt;&lt;capture _i&gt;&gt;
-
-            &lt;&lt;set $img to &quot;assets/img/&quot; + (_i+1) + &quot;.png&quot;&gt;&gt;
-            &lt;div class=&quot;bingo-square&quot; sc-eval:id=&quot;&#39;task&#39; + (_i+1)&quot; sc-eval:data-id=&quot;(_i+1)&quot;&gt;
- 
-                &lt;&lt;link [img[$img][_templateTask]]&gt;&gt;
-                    &lt;&lt;set $current to (_i+1)&gt;&gt;
-            
-                &lt;&lt;/link&gt;&gt;
-            &lt;/div&gt;
-       &lt;&lt;/capture&gt;&gt;
-
-    &lt;&lt;/for&gt;&gt;
-&lt;/div&gt;
-&lt;div id=&quot;lowerInstruction&quot;&gt;&lt;/div&gt;
-&lt;/main&gt;
-
-    &lt;&lt;include &quot;footerbingo&quot;&gt;&gt;
-
-&lt;&lt;silently&gt;&gt;
-    &lt;&lt;timed 0.1s&gt;&gt;
-        &lt;&lt;include &quot;reviewScores&quot;&gt;&gt;
-        &lt;&lt;include &quot;checkForWins&quot;&gt;&gt;
-    &lt;&lt;/timed&gt;&gt;
-&lt;&lt;/silently&gt;&gt; */</tw-passagedata><tw-passagedata pid="10" name="bingo" tags="nobr" position="1225,100" size="100,100">&lt;&lt;include &quot;header&quot;&gt;&gt;
+    &lt;&lt;include &quot;footer&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="10" name="bingo" tags="nobr" position="1225,100" size="100,100">&lt;&lt;include &quot;header&quot;&gt;&gt;
 
 &lt;main&gt;
 
@@ -295,8 +286,10 @@ document.head.appendChild(link);</script><tw-passagedata pid="1" name="StoryInit
        &lt;&lt;capture _i&gt;&gt;
 
            &lt;&lt;set $img to &quot;assets/img/&quot; + ($taskOrder[_i]) + &quot;.png&quot;&gt;&gt;
-           &lt;div sc-eval:class=&quot;&#39;bingo-square task&#39; + ($taskOrder[_i])&quot; sc-eval:id=&quot;&#39;task&#39; + ($taskOrder[_i])&quot; sc-eval:data-id=&quot;$taskOrder[_i]&quot;&gt;
-       
+    
+           &lt;div sc-eval:class=&quot;&#39;bingo-square task&#39; + ($taskOrder[_i])&quot; sc-eval:id=&quot;&#39;square&#39; + [_i]&quot; sc-eval:data-id=&quot;&#39;square&#39; + [_i]&quot;&gt;
+       /* &lt;span&gt;sq: _i&lt;/span&gt;
+       &lt;span&gt;t: $taskOrder[_i]&lt;/span&gt; */
                &lt;&lt;link [img[$img][_templateTask]]&gt;&gt;
                    &lt;&lt;set $current to $taskOrder[_i]&gt;&gt;
                &lt;&lt;/link&gt;&gt;
@@ -321,84 +314,125 @@ document.head.appendChild(link);</script><tw-passagedata pid="1" name="StoryInit
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/for&gt;&gt;
 
+/* :: checkSquares [nobr]
+/* * Display the square data for debugging */
 
-/* :: reviewScores [nobr]
-&lt;&lt;for _i to 0; _i lt $tasks.length; _i++&gt;&gt;
-    &lt;&lt;if $tasks[_i].complete is true&gt;&gt;
-        &lt;&lt;set $taskId to $tasks[_i].task&gt;&gt;
-        &lt;&lt;for _j to 0; _j lt $tasks.length; _j++&gt;&gt;
-            &lt;&lt;if $tasks[_j].task == $taskId&gt;&gt;
-                &lt;&lt;set $id to &quot;#task&quot; + (_j + 1)&gt;&gt;
-                &lt;&lt;addclass $id &quot;complete&quot;&gt;&gt;
-            &lt;&lt;/if&gt;&gt;
-        &lt;&lt;/for&gt;&gt;
-    &lt;&lt;/if&gt;&gt;
-&lt;&lt;/for&gt;&gt; */</tw-passagedata><tw-passagedata pid="12" name="checkForWins" tags="nobr" position="225,225" size="100,100">&lt;&lt;set _hasWon to false&gt;&gt;
+/* &lt;&lt;for _i to 0; _i lt $squares.length; _i++&gt;&gt;
+    &lt;&lt;append &quot;#lowerInstruction&quot;&gt;&gt;
+    Square No: _i
+    Task: &lt;&lt;print $squares[_i].task&gt;&gt;, Complete: &lt;&lt;print $squares[_i].complete&gt;&gt;&lt;br&gt;
+    &lt;&lt;/append&gt;&gt;
+&lt;&lt;/for&gt;&gt;  */</tw-passagedata><tw-passagedata pid="12" name="checkForWins" tags="nobr" position="225,225" size="100,100">&lt;&lt;set _hasWon to false&gt;&gt;
 
 &lt;!-- Check horizontal wins (rows) --&gt;
 &lt;&lt;for _row to 0; _row lt 5; _row++&gt;&gt;
-    &lt;&lt;if $tasks.slice(_row * 5, _row * 5 + 5).every(task =&gt; task.complete)&gt;&gt;
+    &lt;&lt;if $squares.slice(_row * 5, _row * 5 + 5).every(square =&gt; square.complete)&gt;&gt;
         &lt;&lt;set _hasWon to true&gt;&gt;
+        &lt;!-- Add &#39;win-line&#39; class to the squares in the winning row --&gt;
+        &lt;&lt;for _col to 0; _col lt 5; _col++&gt;&gt;
+            &lt;&lt;set _sqNo to _row * 5 + _col&gt;&gt;
+            &lt;&lt;set _id to &quot;#square&quot; + _sqNo&gt;&gt;
+            &lt;&lt;addclass _id &quot;win-line&quot;&gt;&gt;
+        &lt;&lt;/for&gt;&gt;
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/for&gt;&gt;
 
 &lt;!-- Check vertical wins (columns) --&gt;
 &lt;&lt;for _col to 0; _col lt 5; _col++&gt;&gt;
-    &lt;&lt;set _verticalTasks to []&gt;&gt;
+    &lt;&lt;set _verticalSquares to []&gt;&gt;
     &lt;&lt;for _row to 0; _row lt 5; _row++&gt;&gt;
-        &lt;&lt;set _verticalTasks.push($tasks[_row * 5 + _col])&gt;&gt;
+        &lt;&lt;set _verticalSquares.push($squares[_row * 5 + _col])&gt;&gt;
     &lt;&lt;/for&gt;&gt;
-    &lt;&lt;if _verticalTasks.every(task =&gt; task.complete)&gt;&gt;
+    &lt;&lt;if _verticalSquares.every(square =&gt; square.complete)&gt;&gt;
         &lt;&lt;set _hasWon to true&gt;&gt;
+        &lt;!-- Add &#39;win-line&#39; class to the squares in the winning column --&gt;
+        &lt;&lt;for _row to 0; _row lt 5; _row++&gt;&gt;
+            &lt;&lt;set _sqNo to _row * 5 + _col&gt;&gt;
+            &lt;&lt;set _id to &quot;#square&quot; + _sqNo&gt;&gt;
+            &lt;&lt;addclass _id &quot;win-line&quot;&gt;&gt;
+        &lt;&lt;/for&gt;&gt;
     &lt;&lt;/if&gt;&gt;
 &lt;&lt;/for&gt;&gt;
 
 &lt;!-- Check diagonal wins --&gt;
 &lt;!-- Top-left to bottom-right diagonal --&gt;
-&lt;&lt;set _diag1 to [$tasks[0], $tasks[6], $tasks[12], $tasks[18], $tasks[24]]&gt;&gt;
-&lt;&lt;if _diag1.every(task =&gt; task.complete)&gt;&gt;
+&lt;&lt;set _diag1 to [$squares[0], $squares[6], $squares[12], $squares[18], $squares[24]]&gt;&gt;
+&lt;&lt;if _diag1.every(square =&gt; square.complete)&gt;&gt;
     &lt;&lt;set _hasWon to true&gt;&gt;
+    &lt;!-- Add &#39;win-line&#39; class to the squares in the winning diagonal --&gt;
+    &lt;&lt;addclass &quot;#square0&quot; &quot;win-line&quot;&gt;&gt;
+    &lt;&lt;addclass &quot;#square6&quot; &quot;win-line&quot;&gt;&gt;
+    &lt;&lt;addclass &quot;#square12&quot; &quot;win-line&quot;&gt;&gt;
+    &lt;&lt;addclass &quot;#square18&quot; &quot;win-line&quot;&gt;&gt;
+    &lt;&lt;addclass &quot;#square24&quot; &quot;win-line&quot;&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
 &lt;!-- Top-right to bottom-left diagonal --&gt;
-&lt;&lt;set _diag2 to [$tasks[4], $tasks[8], $tasks[12], $tasks[16], $tasks[20]]&gt;&gt;
-&lt;&lt;if _diag2.every(task =&gt; task.complete)&gt;&gt;
+&lt;&lt;set _diag2 to [$squares[4], $squares[8], $squares[12], $squares[16], $squares[20]]&gt;&gt;
+&lt;&lt;if _diag2.every(square =&gt; square.complete)&gt;&gt;
     &lt;&lt;set _hasWon to true&gt;&gt;
+    &lt;!-- Add &#39;win-line&#39; class to the squares in the winning diagonal --&gt;
+    &lt;&lt;addclass &quot;#square4&quot; &quot;win-line&quot;&gt;&gt;
+    &lt;&lt;addclass &quot;#square8&quot; &quot;win-line&quot;&gt;&gt;
+    &lt;&lt;addclass &quot;#square12&quot; &quot;win-line&quot;&gt;&gt;
+    &lt;&lt;addclass &quot;#square16&quot; &quot;win-line&quot;&gt;&gt;
+    &lt;&lt;addclass &quot;#square20&quot; &quot;win-line&quot;&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 
 &lt;!-- Display win message if a line is complete --&gt;
 &lt;&lt;if _hasWon is true&gt;&gt;
     &lt;&lt;addclass &quot;body&quot; &quot;win&quot;&gt;&gt;
- &lt;&lt;replace &quot;#winMount&quot;&gt;&gt;
+    &lt;&lt;replace &quot;#winMount&quot;&gt;&gt;
         &lt;h1&gt;BINGO!&lt;/h1&gt;
-&lt;&lt;/replace&gt;&gt;
- &lt;&lt;replace &quot;#instruction&quot;&gt;&gt;
+    &lt;&lt;/replace&gt;&gt;
+    &lt;&lt;replace &quot;#instruction&quot;&gt;&gt;
         &lt;span&gt;You did it&lt;/span&gt;
-&lt;&lt;/replace&gt;&gt;
-&lt;&lt;replace &quot;#lowerInstruction&quot;&gt;&gt;
-    &lt;p class=&quot;instruction&quot;&gt;Head to the Coney table and scan the QR code to register your interest in cohort 2 &amp; then you’ll receive your prize. &lt;/p&gt;
+    &lt;&lt;/replace&gt;&gt;
+    &lt;&lt;replace &quot;#lowerInstruction&quot;&gt;&gt;
+        &lt;p class=&quot;instruction&quot;&gt;Head to the Coney table and scan the QR code to register your interest in cohort 2 &amp; then you’ll receive your prize.&lt;/p&gt;
     &lt;&lt;/replace&gt;&gt;
 &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="13" name="headerTask" tags="nobr" position="350,225" size="100,100">&lt;&lt;set $headerimg to &quot;assets/img/&quot; + $current + &quot;.png&quot;&gt;&gt;
 &lt;header class=&quot;task&quot;&gt;
     &lt;h2&gt;$current&lt;/h2&gt;
    &lt;div class=&quot;header-img-wrapper&quot;&gt;[img[$headerimg]]&lt;/div&gt;
-&lt;/header&gt;</tw-passagedata><tw-passagedata pid="14" name="_templateTask" tags="nobr" position="475,225" size="100,100">&lt;&lt;include &quot;headerTask&quot;&gt;&gt; 
+&lt;/header&gt;</tw-passagedata><tw-passagedata pid="14" name="_templateTask" tags="nobr" position="475,225" size="100,100">/* loop over the squares to find out which squares feature this task. */
+
+ &lt;&lt;set $relevantSquares to []&gt;&gt;
+&lt;&lt;for _i to 0; _i lt $squares.length; _i++&gt;&gt;
+    &lt;&lt;if $squares[_i].task == $current&gt;&gt;
+        &lt;&lt;set $relevantSquares.push(_i)&gt;&gt;
+    &lt;&lt;/if&gt;&gt;
+&lt;&lt;/for&gt;&gt;
+&lt;&lt;include &quot;headerTask&quot;&gt;&gt; 
 &lt;main&gt;
      &lt;&lt;include $current+&quot;task&quot;&gt;&gt;
+ 
+  &lt;!-- display the array index of the squares that contain this task --&gt;
+    This task is on square(s): 
+    &lt;&lt;for _i to 0; _i lt $relevantSquares.length; _i++&gt;&gt;
+        &lt;&lt;print (_i &gt; 0 ? &quot;, &quot; : &quot;&quot;) + $relevantSquares[_i]&gt;&gt;
+    &lt;&lt;/for&gt;&gt;
+
      &lt;br/&gt;&lt;br/&gt;
     &lt;p&gt;Have you completed this task?&lt;/p&gt;
  &lt;&lt;set _taskIndex to $tasks.findIndex(task =&gt; task.task == $current)&gt;&gt;
 
-  &lt;!-- If the task is found, update the completion status --&gt;
+  &lt;!-- If the task is found, update the task and square completion status --&gt;
     &lt;&lt;if _taskIndex != -1&gt;&gt;
-        &lt;!-- Task completion buttons --&gt;
         &lt;&lt;button &quot;Yes&quot;&gt;&gt;
             &lt;&lt;set $tasks[_taskIndex].complete to true&gt;&gt;
+             &lt;&lt;for _i to 0; _i lt $relevantSquares.length; _i++&gt;&gt;
+                /* find the associated original square  */
+               &lt;&lt;set $squares[$relevantSquares[_i]].complete to true&gt;&gt;
+            &lt;&lt;/for&gt;&gt;
             &lt;&lt;goto &quot;bingo&quot;&gt;&gt;
         &lt;&lt;/button&gt;&gt;
         
         &lt;&lt;button &quot;No&quot;&gt;&gt;
             &lt;&lt;set $tasks[_taskIndex].complete to false&gt;&gt;
+             &lt;&lt;for _i to 0; _i lt $relevantSquares.length; _i++&gt;&gt;
+                 &lt;&lt;set $squares[$relevantSquares[_i]].complete to false&gt;&gt;
+            &lt;&lt;/for&gt;&gt;
             &lt;&lt;goto &quot;bingo&quot;&gt;&gt;
         &lt;&lt;/button&gt;&gt;
     &lt;&lt;/if&gt;&gt;
@@ -416,21 +450,23 @@ document.head.appendChild(link);</script><tw-passagedata pid="1" name="StoryInit
         &lt;&lt;goto &quot;bingo&quot;&gt;&gt;
     &lt;&lt;/button&gt;&gt;
 &lt;/main&gt;</tw-passagedata><tw-passagedata pid="16" name="1task" tags="nobr" position="725,225" size="100,100">&lt;h3&gt;Capture the Mural&lt;/h3&gt;
-&lt;p&gt;Take a picture of your favourite part of the mural!&lt;/p&gt;</tw-passagedata><tw-passagedata pid="17" name="2task" tags="" position="850,225" size="100,100">&lt;h3&gt;Engage with Staff&lt;/h3&gt;
-&lt;p&gt;Ask a British Library staff member for their favourite fact about the building or their job and write it down.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="18" name="3task" tags="" position="975,225" size="100,100">&lt;h3&gt;Capture the Moment&lt;/h3&gt;
-&lt;p&gt;Take a photo of a standout moment from the event and share it on social media with the hashtag #YoungCreatorsLab&lt;/p&gt;</tw-passagedata><tw-passagedata pid="19" name="4task" tags="" position="1100,225" size="100,100">&lt;h3&gt;Join the Conversation&lt;/h3&gt;
-&lt;p&gt;Comment on a Young Creators Lab video on TikTok.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="20" name="5task" tags="" position="1225,225" size="100,100">&lt;h3&gt;Share Your Thoughts&lt;/h3&gt;
-&lt;p&gt;Visit the Evaluation Wall, add your feedback, and take a photo of your contribution.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="21" name="6task" tags="" position="100,350" size="100,100">&lt;h3&gt;Fashion Match&lt;/h3&gt;
-&lt;p&gt;Snap a photo in the photo booth with someone wearing a similar outfit to yours.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="22" name="7task" tags="" position="225,350" size="100,100">&lt;h3&gt;Make a Connection&lt;/h3&gt;
-&lt;p&gt;Meet someone new and discover the most interesting thing you both have in common (no aesthetics allowed!).&lt;/p&gt;</tw-passagedata><tw-passagedata pid="23" name="8task" tags="" position="350,350" size="100,100">&lt;h3&gt;Network&lt;/h3&gt;
-&lt;p&gt;Find someone in your field and exchange email addresses or social media handles.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="24" name="9task" tags="" position="475,350" size="100,100">&lt;h3&gt;Capture Inspiration&lt;/h3&gt;
-&lt;p&gt;Spend a few moments by Talkaoke and write down a standout quote you hear.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="25" name="10task" tags="" position="600,350" size="100,100">&lt;h3&gt;Gather Your Crew&lt;/h3&gt;
-&lt;p&gt;Assemble a group of four people wearing the same colour to take a picture at the Coney table.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="26" name="11task" tags="" position="725,350" size="100,100">&lt;h3&gt;Meet the Radio Producer&lt;/h3&gt;
-&lt;p&gt;In the Zine, locate the person who loves remixing Caribbean genres and Soca. Approach them and say, “Are you the voice of the Big Brother adverts?”&lt;/p&gt;</tw-passagedata><tw-passagedata pid="27" name="12task" tags="" position="850,350" size="100,100">&lt;h3&gt; Roller Skating Tips&lt;/h3&gt;
-&lt;p&gt;Find the person in the Zine who enjoys roller skating and ask, “Do you have any roller skating tips?”&lt;/p&gt;</tw-passagedata><tw-passagedata pid="28" name="13task" tags="" position="975,350" size="100,100">&lt;h3&gt;Social Media Insights&lt;/h3&gt;
-&lt;p&gt;Ask a stranger about their favourite and least favourite social media platforms, and why.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="29" name="14task" tags="" position="1100,350" size="100,100">&lt;h3&gt;Connect with Creators&lt;/h3&gt;
-&lt;p&gt;Find a young creator and ask them about their highlight of the program, a top tip they learned, or a creative insight.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="30" name="15task" tags="" position="1225,350" size="100,100">&lt;h3&gt; Share Recommendations&lt;/h3&gt;
-&lt;p&gt;Exchange book, song, or film/TV show recommendations with someone new.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="31" name="16task" tags="" position="100,475" size="100,100">&lt;p&gt;Task 16 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="32" name="17task" tags="" position="225,475" size="100,100">&lt;p&gt;Task 17 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="33" name="18task" tags="" position="350,475" size="100,100">&lt;p&gt;Task 18 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="34" name="19task" tags="" position="475,475" size="100,100">&lt;p&gt;Task 19 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="35" name="20task" tags="" position="600,475" size="100,100">&lt;p&gt;Task 20 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="36" name="21task" tags="" position="725,475" size="100,100">&lt;p&gt;Task 21 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="37" name="22task" tags="" position="850,475" size="100,100">&lt;p&gt;Task 22 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="38" name="23task" tags="" position="975,475" size="100,100">&lt;p&gt;Task 23 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="39" name="24task" tags="" position="1100,475" size="100,100">&lt;p&gt;Task 24 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="40" name="25task" tags="" position="1225,475" size="100,100">&lt;p&gt;Task 25 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.&lt;/p&gt;
+&lt;p&gt;Take a picture of your favourite part of the mural!&lt;/p&gt;</tw-passagedata><tw-passagedata pid="17" name="2task" tags="nobr" position="850,225" size="100,100">&lt;h3&gt;Engage with Staff&lt;/h3&gt;
+&lt;p&gt;Ask a British Library staff member for their favourite fact about the building or their job and write it down.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="18" name="3task" tags="nobr" position="975,225" size="100,100">&lt;h3&gt;Capture the Moment&lt;/h3&gt;
+&lt;p&gt;Take a photo of a standout moment from the event and share it on social media with the hashtag #YoungCreatorsLab&lt;/p&gt;</tw-passagedata><tw-passagedata pid="19" name="4task" tags="nobr" position="1100,225" size="100,100">&lt;h3&gt;Join the Conversation&lt;/h3&gt;
+&lt;p&gt;Comment on a Young Creators Lab video on TikTok.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="20" name="5task" tags="nobr" position="1225,225" size="100,100">&lt;h3&gt;Share Your Thoughts&lt;/h3&gt;
+&lt;p&gt;Visit the Evaluation Wall, add your feedback, and take a photo of your contribution.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="21" name="6task" tags="nobr" position="100,350" size="100,100">&lt;h3&gt;Fashion Match&lt;/h3&gt;
+&lt;p&gt;Snap a photo in the photo booth with someone wearing a similar outfit to yours.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="22" name="7task" tags="nobr" position="225,350" size="100,100">&lt;h3&gt;Make a Connection&lt;/h3&gt;
+&lt;p&gt;Meet someone new and discover the most interesting thing you both have in common (no aesthetics allowed!).&lt;/p&gt;</tw-passagedata><tw-passagedata pid="23" name="8task" tags="nobr" position="350,350" size="100,100">&lt;h3&gt;Network&lt;/h3&gt;
+&lt;p&gt;Find someone in your field and exchange email addresses or social media handles.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="24" name="9task" tags="nobr" position="475,350" size="100,100">&lt;h3&gt;Capture Inspiration&lt;/h3&gt;
+&lt;p&gt;Spend a few moments by Talkaoke and write down a standout quote you hear.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="25" name="10task" tags="nobr" position="600,350" size="100,100">&lt;h3&gt;Gather Your Crew&lt;/h3&gt;
+&lt;p&gt;Assemble a group of four people wearing the same colour to take a picture at the Coney table.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="26" name="11task" tags="nobr" position="725,350" size="100,100">&lt;h3&gt;Meet the Radio Producer&lt;/h3&gt;
+&lt;p&gt;In the Zine, locate the person who loves remixing Caribbean genres and Soca. Approach them and say, “Are you the voice of the Big Brother adverts?”&lt;/p&gt;</tw-passagedata><tw-passagedata pid="27" name="12task" tags="nobr" position="850,350" size="100,100">&lt;h3&gt; Roller Skating Tips&lt;/h3&gt;
+&lt;p&gt;Find the person in the Zine who enjoys roller skating and ask, “Do you have any roller skating tips?”&lt;/p&gt;</tw-passagedata><tw-passagedata pid="28" name="13task" tags="nobr" position="975,350" size="100,100">&lt;h3&gt;Social Media Insights&lt;/h3&gt;
+&lt;p&gt;Ask a stranger about their favourite and least favourite social media platforms, and why.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="29" name="14task" tags="nobr" position="1100,350" size="100,100">&lt;h3&gt;Connect with Creators&lt;/h3&gt;
+&lt;p&gt;Find a young creator and ask them about their highlight of the program, a top tip they learned, or a creative insight.&lt;/p&gt;</tw-passagedata><tw-passagedata pid="30" name="15task" tags="nobr" position="1225,350" size="100,100">&lt;h3&gt; Share Recommendations&lt;/h3&gt;
+&lt;p&gt;Exchange book, song, or film/TV show recommendations with someone new.&lt;/p&gt;
+
+
 
 /* :: 1 [nobr]
 &lt;main&gt;

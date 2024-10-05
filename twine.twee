@@ -76,26 +76,51 @@ document.head.appendChild(link);
         <<button "Back">>
             <<goto "landing">>
         <</button>>
-    
+      <<button "Next">>
+        <<goto "bingo">>
+    <</button>>
          <div id="replayBtnMount"></div>
     </div>
 </footer>
 
 
 :: landing [nobr]
+/* initiate tasks  */
 <<set $tasks to []>>
-<<for _i to 0; _i lt 25; _i++>>
+<<for _i to 0; _i lt 15; _i++>>
     <<set $tasks.push({
         task: _i + 1,
         complete: false
     })>>
 <</for>>
-<div class="desktop-message" style="display: none;">
+/* initiate squares and associate tasks */
+<<set $squares to []>>
+<<set $taskOrder to [1, 5, 3, 14, 12, 6, 9, 8, 1, 11, 7, 13, 15, 3, 4, 2, 8, 6, 4, 10, 5, 3, 11, 10, 15]>>
+<<for _i to 0; _i lt 25; _i++>>
+    /* Find the task object for this square */
+    <<set _taskIndex to $taskOrder[_i] - 1>> <!-- taskOrder contains task numbers 1 to 15, so subtract 1 for index -->
+    <<set _task to $tasks[_taskIndex]>>
+    
+    /* Push square data to $squares array */
+    <<set $squares.push({
+        task: _task.task,
+        complete: _task.complete
+    })>>
+<</for>>
+
+/* Display the square data for debugging */
+/* <<for _i to 0; _i lt $squares.length; _i++>>
+    Task: <<print $squares[_i].task>>, Complete: <<print $squares[_i].complete>><br>
+<</for>> */
+<<addclass "body" "black">>
+
+<div class="desktop-message">
   <p>Please view this on a phone.</p>
 </div>
-<main>
-
-
+<main class="landing">
+<div class="logo-wrapper rotate">
+<img src="/assets/img/logo2.png" alt="logo"/>
+</div>
     <<button "Start">>
         <<goto "bingointro">>
     <</button>>
@@ -201,39 +226,7 @@ document.head.appendChild(link);
 
     <<include "footer">>
 
-/* :: bingo[nobr]
 
-<<include "header">>
-
-<main>
-
-<div class="bingo-container">
-   <<for _i to 0; _i lt 25; _i++>>
-    <<capture _i>>
-
-            <<set $img to "assets/img/" + (_i+1) + ".png">>
-            <div class="bingo-square" sc-eval:id="'task' + (_i+1)" sc-eval:data-id="(_i+1)">
- 
-                <<link [img[$img][_templateTask]]>>
-                    <<set $current to (_i+1)>>
-            
-                <</link>>
-            </div>
-       <</capture>>
-
-    <</for>>
-</div>
-<div id="lowerInstruction"></div>
-</main>
-
-    <<include "footerbingo">>
-
-<<silently>>
-    <<timed 0.1s>>
-        <<include "reviewScores">>
-        <<include "checkForWins">>
-    <</timed>>
-<</silently>> */
 
 :: bingo[nobr]
 
@@ -248,8 +241,10 @@ document.head.appendChild(link);
        <<capture _i>>
 
            <<set $img to "assets/img/" + ($taskOrder[_i]) + ".png">>
-           <div sc-eval:class="'bingo-square task' + ($taskOrder[_i])" sc-eval:id="'task' + ($taskOrder[_i])" sc-eval:data-id="$taskOrder[_i]">
-       
+    
+           <div sc-eval:class="'bingo-square task' + ($taskOrder[_i])" sc-eval:id="'square' + [_i]" sc-eval:data-id="'square' + [_i]">
+       /* <span>sq: _i</span>
+       <span>t: $taskOrder[_i]</span> */
                <<link [img[$img][_templateTask]]>>
                    <<set $current to $taskOrder[_i]>>
                <</link>>
@@ -278,65 +273,87 @@ document.head.appendChild(link);
     <</if>>
 <</for>>
 
+/* :: checkSquares [nobr]
+/* * Display the square data for debugging */
 
-/* :: reviewScores [nobr]
-<<for _i to 0; _i lt $tasks.length; _i++>>
-    <<if $tasks[_i].complete is true>>
-        <<set $taskId to $tasks[_i].task>>
-        <<for _j to 0; _j lt $tasks.length; _j++>>
-            <<if $tasks[_j].task == $taskId>>
-                <<set $id to "#task" + (_j + 1)>>
-                <<addclass $id "complete">>
-            <</if>>
-        <</for>>
-    <</if>>
-<</for>> */
+/* <<for _i to 0; _i lt $squares.length; _i++>>
+    <<append "#lowerInstruction">>
+    Square No: _i
+    Task: <<print $squares[_i].task>>, Complete: <<print $squares[_i].complete>><br>
+    <</append>>
+<</for>>  */
+
+
 
 :: checkForWins [nobr]
 <<set _hasWon to false>>
 
 <!-- Check horizontal wins (rows) -->
 <<for _row to 0; _row lt 5; _row++>>
-    <<if $tasks.slice(_row * 5, _row * 5 + 5).every(task => task.complete)>>
+    <<if $squares.slice(_row * 5, _row * 5 + 5).every(square => square.complete)>>
         <<set _hasWon to true>>
+        <!-- Add 'win-line' class to the squares in the winning row -->
+        <<for _col to 0; _col lt 5; _col++>>
+            <<set _sqNo to _row * 5 + _col>>
+            <<set _id to "#square" + _sqNo>>
+            <<addclass _id "win-line">>
+        <</for>>
     <</if>>
 <</for>>
 
 <!-- Check vertical wins (columns) -->
 <<for _col to 0; _col lt 5; _col++>>
-    <<set _verticalTasks to []>>
+    <<set _verticalSquares to []>>
     <<for _row to 0; _row lt 5; _row++>>
-        <<set _verticalTasks.push($tasks[_row * 5 + _col])>>
+        <<set _verticalSquares.push($squares[_row * 5 + _col])>>
     <</for>>
-    <<if _verticalTasks.every(task => task.complete)>>
+    <<if _verticalSquares.every(square => square.complete)>>
         <<set _hasWon to true>>
+        <!-- Add 'win-line' class to the squares in the winning column -->
+        <<for _row to 0; _row lt 5; _row++>>
+            <<set _sqNo to _row * 5 + _col>>
+            <<set _id to "#square" + _sqNo>>
+            <<addclass _id "win-line">>
+        <</for>>
     <</if>>
 <</for>>
 
 <!-- Check diagonal wins -->
 <!-- Top-left to bottom-right diagonal -->
-<<set _diag1 to [$tasks[0], $tasks[6], $tasks[12], $tasks[18], $tasks[24]]>>
-<<if _diag1.every(task => task.complete)>>
+<<set _diag1 to [$squares[0], $squares[6], $squares[12], $squares[18], $squares[24]]>>
+<<if _diag1.every(square => square.complete)>>
     <<set _hasWon to true>>
+    <!-- Add 'win-line' class to the squares in the winning diagonal -->
+    <<addclass "#square0" "win-line">>
+    <<addclass "#square6" "win-line">>
+    <<addclass "#square12" "win-line">>
+    <<addclass "#square18" "win-line">>
+    <<addclass "#square24" "win-line">>
 <</if>>
 
 <!-- Top-right to bottom-left diagonal -->
-<<set _diag2 to [$tasks[4], $tasks[8], $tasks[12], $tasks[16], $tasks[20]]>>
-<<if _diag2.every(task => task.complete)>>
+<<set _diag2 to [$squares[4], $squares[8], $squares[12], $squares[16], $squares[20]]>>
+<<if _diag2.every(square => square.complete)>>
     <<set _hasWon to true>>
+    <!-- Add 'win-line' class to the squares in the winning diagonal -->
+    <<addclass "#square4" "win-line">>
+    <<addclass "#square8" "win-line">>
+    <<addclass "#square12" "win-line">>
+    <<addclass "#square16" "win-line">>
+    <<addclass "#square20" "win-line">>
 <</if>>
 
 <!-- Display win message if a line is complete -->
 <<if _hasWon is true>>
     <<addclass "body" "win">>
- <<replace "#winMount">>
+    <<replace "#winMount">>
         <h1>BINGO!</h1>
-<</replace>>
- <<replace "#instruction">>
+    <</replace>>
+    <<replace "#instruction">>
         <span>You did it</span>
-<</replace>>
-<<replace "#lowerInstruction">>
-    <p class="instruction">Head to the Coney table and scan the QR code to register your interest in cohort 2 & then you’ll receive your prize. </p>
+    <</replace>>
+    <<replace "#lowerInstruction">>
+        <p class="instruction">Head to the Coney table and scan the QR code to register your interest in cohort 2 & then you’ll receive your prize.</p>
     <</replace>>
 <</if>>
 
@@ -350,24 +367,44 @@ document.head.appendChild(link);
 </header>
 
 :: _templateTask[nobr]
+/* loop over the squares to find out which squares feature this task. */
 
+ <<set $relevantSquares to []>>
+<<for _i to 0; _i lt $squares.length; _i++>>
+    <<if $squares[_i].task == $current>>
+        <<set $relevantSquares.push(_i)>>
+    <</if>>
+<</for>>
 <<include "headerTask">> 
 <main>
      <<include $current+"task">>
+ 
+  <!-- display the array index of the squares that contain this task -->
+    This task is on square(s): 
+    <<for _i to 0; _i lt $relevantSquares.length; _i++>>
+        <<print (_i > 0 ? ", " : "") + $relevantSquares[_i]>>
+    <</for>>
+
      <br/><br/>
     <p>Have you completed this task?</p>
  <<set _taskIndex to $tasks.findIndex(task => task.task == $current)>>
 
-  <!-- If the task is found, update the completion status -->
+  <!-- If the task is found, update the task and square completion status -->
     <<if _taskIndex != -1>>
-        <!-- Task completion buttons -->
         <<button "Yes">>
             <<set $tasks[_taskIndex].complete to true>>
+             <<for _i to 0; _i lt $relevantSquares.length; _i++>>
+                /* find the associated original square  */
+               <<set $squares[$relevantSquares[_i]].complete to true>>
+            <</for>>
             <<goto "bingo">>
         <</button>>
         
         <<button "No">>
             <<set $tasks[_taskIndex].complete to false>>
+             <<for _i to 0; _i lt $relevantSquares.length; _i++>>
+                 <<set $squares[$relevantSquares[_i]].complete to false>>
+            <</for>>
             <<goto "bingo">>
         <</button>>
     <</if>>
@@ -393,92 +430,63 @@ document.head.appendChild(link);
 <h3>Capture the Mural</h3>
 <p>Take a picture of your favourite part of the mural!</p>
 
-:: 2task
+:: 2task [nobr]
 <h3>Engage with Staff</h3>
 <p>Ask a British Library staff member for their favourite fact about the building or their job and write it down.</p>
 
-:: 3task
+:: 3task [nobr]
 <h3>Capture the Moment</h3>
 <p>Take a photo of a standout moment from the event and share it on social media with the hashtag #YoungCreatorsLab</p>
 
-:: 4task
+:: 4task [nobr]
 <h3>Join the Conversation</h3>
 <p>Comment on a Young Creators Lab video on TikTok.</p>
 
-:: 5task
+:: 5task [nobr]
 <h3>Share Your Thoughts</h3>
 <p>Visit the Evaluation Wall, add your feedback, and take a photo of your contribution.</p>
 
-:: 6task
+:: 6task [nobr]
 <h3>Fashion Match</h3>
 <p>Snap a photo in the photo booth with someone wearing a similar outfit to yours.</p>
 
-:: 7task
+:: 7task [nobr]
 <h3>Make a Connection</h3>
 <p>Meet someone new and discover the most interesting thing you both have in common (no aesthetics allowed!).</p>
 
-:: 8task
+:: 8task [nobr]
 <h3>Network</h3>
 <p>Find someone in your field and exchange email addresses or social media handles.</p>
 
-:: 9task
+:: 9task [nobr]
 <h3>Capture Inspiration</h3>
 <p>Spend a few moments by Talkaoke and write down a standout quote you hear.</p>
 
-:: 10task
+:: 10task [nobr]
 <h3>Gather Your Crew</h3>
 <p>Assemble a group of four people wearing the same colour to take a picture at the Coney table.</p>
 
-:: 11task
+:: 11task [nobr]
 <h3>Meet the Radio Producer</h3>
 <p>In the Zine, locate the person who loves remixing Caribbean genres and Soca. Approach them and say, “Are you the voice of the Big Brother adverts?”</p>
 
-:: 12task
+:: 12task [nobr]
 <h3> Roller Skating Tips</h3>
 <p>Find the person in the Zine who enjoys roller skating and ask, “Do you have any roller skating tips?”</p>
 
-:: 13task
+:: 13task [nobr]
 <h3>Social Media Insights</h3>
 <p>Ask a stranger about their favourite and least favourite social media platforms, and why.</p>
 
-:: 14task
+:: 14task [nobr]
 <h3>Connect with Creators</h3>
 <p>Find a young creator and ask them about their highlight of the program, a top tip they learned, or a creative insight.</p>
 
-:: 15task
+:: 15task [nobr]
 <h3> Share Recommendations</h3>
 <p>Exchange book, song, or film/TV show recommendations with someone new.</p>
 
-:: 16task
 
-<p>Task 16 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
-
-:: 17task
-<p>Task 17 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
-
-:: 18task
-<p>Task 18 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
-
-:: 19task
-<p>Task 19 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
-
-:: 20task
-<p>Task 20 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
-
-:: 21task
-<p>Task 21 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
-
-:: 22task
-<p>Task 22 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
-
-:: 23task
-<p>Task 23 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
-
-:: 24task
-<p>Task 24 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
-
-:: 25task
-<p>Task 25 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices aliquam magna, ac tempor erat tincidunt eget. Nullam pulvinar tortor sem, eu consectetur dui efficitur vitae. Donec aliquam sodales magna, nec sollicitudin ligula condimentum et. Sed eleifend quam quis ex fermentum, nec sodales nisi gravida.</p>
 
 /* :: 1 [nobr]
 <main>

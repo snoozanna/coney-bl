@@ -170,6 +170,10 @@ background-size: contain, cover; /* Size the logo (contain) and gradient (cover)
   overflow: scroll;
 }
 
+body.black{
+  background: black;
+}
+
 body.win{
   background: rgb(174,165,244);
   background: radial-gradient(circle, rgba(174,165,244,1) 9%, rgba(245,213,153,1) 53%, rgba(244,143,245,1) 94%);
@@ -241,7 +245,7 @@ p{
   justify-content: center;
   background-color: #ceafd6;
   border: 2px solid #333;
-  font-size: 24px;
+  font-size: 6px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -273,6 +277,15 @@ p{
   margin-block-end: 10rem;
 }
 
+#lowerInstruction > .instruction{
+ text-align: center;
+}
+
+.bingo-square.complete.win-line {
+  background-color: #f0d1a0;
+}
+
+
 /* TASK  */
 header.task{
   text-align: left;
@@ -292,6 +305,29 @@ header.task > h2{
   z-index: -99;
 }
 
+/* LANDING */
+
+main.landing{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:3rem;
+  flex-direction: column;
+  height: 100%;
+}
+
+@keyframes slowRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate {
+  animation: slowRotate 100s linear infinite;
+}
 
 
 /* MENTIMETER */
@@ -300,15 +336,20 @@ header.task > h2{
   padding: 1.5rem;
 }
 
-/* @media screen and (min-width: 700px) {
+.desktop-message{
+  display: none;
+}
+
+@media screen and (min-width: 700px) {
  main{
   display: none
-};
-
-  .desktop-message {
-    display: block;
+}
+.desktop-message {
+    display: initial;
     font-size: 20px;
     text-align: center;
     margin-top: 20px;
   }
-} */
+}
+
+
