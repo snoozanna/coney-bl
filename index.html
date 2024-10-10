@@ -407,11 +407,7 @@ document.head.appendChild(link);</script><tw-passagedata pid="1" name="StoryInit
 &lt;main&gt;
      &lt;&lt;include $current+&quot;task&quot;&gt;&gt;
  
-  &lt;!-- display the array index of the squares that contain this task --&gt;
-    This task is on square(s): 
-    &lt;&lt;for _i to 0; _i lt $relevantSquares.length; _i++&gt;&gt;
-        &lt;&lt;print (_i &gt; 0 ? &quot;, &quot; : &quot;&quot;) + $relevantSquares[_i]&gt;&gt;
-    &lt;&lt;/for&gt;&gt;
+
 
      &lt;br/&gt;&lt;br/&gt;
     &lt;p&gt;Have you completed this task?&lt;/p&gt;

@@ -379,11 +379,7 @@ document.head.appendChild(link);
 <main>
      <<include $current+"task">>
  
-  <!-- display the array index of the squares that contain this task -->
-    This task is on square(s): 
-    <<for _i to 0; _i lt $relevantSquares.length; _i++>>
-        <<print (_i > 0 ? ", " : "") + $relevantSquares[_i]>>
-    <</for>>
+
 
      <br/><br/>
     <p>Have you completed this task?</p>
